@@ -1,8 +1,8 @@
 const axios = require("axios");
 
-exports.publishAccountEvent = async (payload) => {
+exports.publishAccountEvent = (payload) => {
   try {
-    await axios.post("http://localhost:8000/account/app-events", {
+    return axios.post("http://localhost:8000/account/app-events", {
       payload,
     });
   } catch (error) {

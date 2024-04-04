@@ -250,6 +250,7 @@ exports.getUserInfoByAccountId = async (accountId = "") => {
     const user = await UserModel.findOne({ accountId }).select(
       "-_id username name avt favoriteList coin"
     );
+
     if (user) return user;
     return null;
   } catch (error) {
