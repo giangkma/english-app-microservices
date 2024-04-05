@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const bcrypt = require('bcryptjs');
-const { MAX, ACCOUNT_TYPES } = require('../constant');
+const bcrypt = require("bcryptjs");
+const { MAX, ACCOUNT_TYPES } = require("../../../../constant");
 
 const accountTypeEnum = (function () {
   let list = [];
@@ -22,7 +22,7 @@ const accountSchema = new Schema({
   },
   password: {
     type: String,
-    default: '',
+    default: "",
     maxLength: MAX.PASSWORD_LEN,
   },
   authType: {
@@ -39,7 +39,7 @@ const accountSchema = new Schema({
 
 // hash password with bcrypt
 // Note: callback should be a normal function -> use 'this'
-accountSchema.pre('save', async function (next) {
+accountSchema.pre("save", async function (next) {
   try {
     if (Boolean(this.password)) {
       const saltRounds = parseInt(process.env.SALT_ROUND);
@@ -54,6 +54,6 @@ accountSchema.pre('save', async function (next) {
   }
 });
 
-const AccountModel = mongoose.model('account', accountSchema, 'accounts');
+const AccountModel = mongoose.model("account", accountSchema, "accounts");
 
 module.exports = AccountModel;

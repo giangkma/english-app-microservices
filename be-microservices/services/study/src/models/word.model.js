@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { NUM_OF_SPECIALTY, NUM_OF_TOPICS } = require('../constant');
+const mongoose = require("mongoose");
+const { NUM_OF_SPECIALTY, NUM_OF_TOPICS } = require("../../../../constant");
 const Schema = mongoose.Schema;
 
 const wordSchema = new Schema({
@@ -22,22 +22,22 @@ const wordSchema = new Schema({
     // If type is number => 1 word = 64 bit = 8 B
     // However, the quantity of conj, prep is much less than the quantity of the other types.
     type: String,
-    enum: ['', 'n', 'adj', 'adv', 'v', 'con', 'pre', 'pro', 'det'],
-    default: '',
+    enum: ["", "n", "adj", "adv", "v", "con", "pre", "pro", "det"],
+    default: "",
   },
 
   level: {
     type: String,
     required: true,
-    enum: ['0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
-    default: '0',
+    enum: ["0", "A1", "A2", "B1", "B2", "C1", "C2"],
+    default: "0",
   },
 
   phonetic: {
     type: String,
     trim: true,
     maxLength: 50,
-    default: '',
+    default: "",
   },
 
   examples: [
@@ -57,7 +57,7 @@ const wordSchema = new Schema({
   specialty: {
     type: String,
     enum: Array.from({ length: NUM_OF_SPECIALTY }, (_, key) => key.toString()),
-    default: '0',
+    default: "0",
   },
 
   topics: [
@@ -83,6 +83,6 @@ const wordSchema = new Schema({
   },
 });
 
-const WordModel = mongoose.model('word', wordSchema, 'words');
+const WordModel = mongoose.model("word", wordSchema, "words");
 
 module.exports = WordModel;

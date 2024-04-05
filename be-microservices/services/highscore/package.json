@@ -1,5 +1,5 @@
 {
-  "name": "study-service",
+  "name": "highscore-service",
   "version": "1.0.0",
   "description": "English247 - Free web app to learn english",
   "main": "index.js",

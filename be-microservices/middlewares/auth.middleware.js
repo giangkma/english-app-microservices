@@ -39,18 +39,17 @@ exports.jwtAuthentication = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     if (decoded) {
       const { accountId } = decoded.sub;
-      const user = await publishAccountEvent({
+      const { data } = await publishAccountEvent({
         event: "GET_USER_INFO_BY_ACCOUNT_ID",
         data: {
           accountId,
         },
       });
-      console.log(user);
 
-      if (user) {
-        user.accountId = accountId;
+      if (data) {
+        data.accountId = accountId;
         res.locals.isAuth = true;
-        req.user = user;
+        req.user = data;
       }
     }
     next();

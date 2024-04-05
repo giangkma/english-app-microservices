@@ -4,9 +4,16 @@
   "main": "gateway.js",
   "scripts": {
     "setup": "copyfiles .env ./services/account && npm install",
-    "account": "cd ./services/account && nodemon index.js",
-    "gateway": "nodemon gateway.js",
-    "dev": "npm-run-all --parallel gateway account"
+    "dev": "nodemon gateway.js",
+    "start": "pm2 start ecosystem.config.js && npm run log",
+    "stop": "pm2 stop all",
+    "log": "pm2 logs",
+    "list": "pm2 list",
+    "delete": "pm2 delete all",
+    "restart": "pm2 restart all && npm run log",
+    "start:gateway": "pm2 start gateway.js && npm run log",
+    "start:account": "pm2 start ./services/account/index.js && npm run log",
+    "start:study": "pm2 start ./services/study/index.js && npm run log"
   },
   "keywords": [],
   "author": "",
@@ -20,10 +27,9 @@
     "dotenv": "^16.4.5",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.2",
-    "jsonwebtoken": "^9.0.2",
-    "npm-run-all": "^4.1.5"
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.22"
   }
 }

@@ -1,10 +1,10 @@
-const bcrypt = require('bcryptjs');
-const { MAX } = require('../constant');
+const bcrypt = require("bcryptjs");
+const { MAX } = require("../../../../constant");
 
-exports.createUsername = (email = '', id = '') => {
+exports.createUsername = (email = "", id = "") => {
   const idStr = id.toString();
   return (
-    email.toString().split('@')[0] + idStr.slice(idStr.length - 5, idStr.length)
+    email.toString().split("@")[0] + idStr.slice(idStr.length - 5, idStr.length)
   );
 };
 
@@ -14,12 +14,12 @@ exports.generateVerifyCode = (numberOfDigits) => {
   let numberStr = number.toString();
   const l = numberStr.length;
   for (let i = 0; i < MAX.VERIFY_CODE - l; ++i) {
-    numberStr = '0' + numberStr;
+    numberStr = "0" + numberStr;
   }
   return numberStr;
 };
 
-exports.hashPassword = async (password = '') => {
+exports.hashPassword = async (password = "") => {
   const saltRounds = parseInt(process.env.SALT_ROUND);
   const hashPassword = await bcrypt.hash(password, saltRounds);
   return hashPassword;

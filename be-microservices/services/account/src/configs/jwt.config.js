@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const { JWT_EXPIRES_TIME } = require('../constant');
+const jwt = require("jsonwebtoken");
+const { JWT_EXPIRES_TIME } = require("../../../../constant");
 
 // tạo một jwt với account id
 const encodedToken = async (secretKey, user, expire = JWT_EXPIRES_TIME) => {
@@ -9,7 +9,7 @@ const encodedToken = async (secretKey, user, expire = JWT_EXPIRES_TIME) => {
       sub: user,
     },
     secretKey,
-    { expiresIn: expire },
+    { expiresIn: expire }
   );
 };
 

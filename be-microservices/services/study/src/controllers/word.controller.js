@@ -1,14 +1,13 @@
-const {
-  isExistWord,
-  uploadImage,
-  getWordPack,
-} = require('../services/common.service');
+const { uploadImage } = require("../../../../libs/cloudinary.lib");
+
 const {
   createNewWord,
   searchWord,
   getWordDetail,
   getFavoriteList,
-} = require('../services/word.service');
+  isExistWord,
+  getWordPack,
+} = require("../services/word.service");
 
 exports.postContributeWord = async (req, res, next) => {
   try {
@@ -25,7 +24,7 @@ exports.postContributeWord = async (req, res, next) => {
     // upload description picture if available
     let pictureUrl = null;
     if (picture) {
-      pictureUrl = await uploadImage(picture, 'dynonary/words');
+      pictureUrl = await uploadImage(picture, "dynonary/words");
     }
 
     // create the new word
@@ -38,12 +37,12 @@ exports.postContributeWord = async (req, res, next) => {
     });
 
     if (isCreateSuccess) {
-      return res.status(200).json({ message: 'Tạo từ mới thành công' });
+      return res.status(200).json({ message: "Tạo từ mới thành công" });
     }
-    return res.status(503).json({ message: 'Lỗi dịch vụ, thử lại sau' });
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   } catch (error) {
-    console.error('POST CONTRIBUTE WORD ERROR: ', error);
-    return res.status(503).json({ message: 'Lỗi dịch vụ, thử lại sau' });
+    console.error("POST CONTRIBUTE WORD ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };
 
@@ -53,7 +52,7 @@ exports.getCheckWordExistence = async (req, res) => {
     const isExist = await isExistWord(word, type);
     return res.status(200).json({ isExist });
   } catch (error) {
-    console.error('GET CHECK WORD EXIST ERROR: ', error);
+    console.error("GET CHECK WORD EXIST ERROR: ", error);
     return res.status(200).json({ isExist: false });
   }
 };
@@ -70,15 +69,15 @@ exports.getWordPack = async (req, res) => {
       JSON.parse(packInfo),
       skip,
       perPageInt,
-      '-_id type word mean phonetic picture',
-      sortType === 'asc' ? '1' : sortType === 'desc' ? '-1' : null,
-      null,
+      "-_id type word mean phonetic picture",
+      sortType === "asc" ? "1" : sortType === "desc" ? "-1" : null,
+      null
     );
 
     return res.status(200).json({ packList });
   } catch (error) {
-    console.error('WORD GET WORD PACK ERROR: ', error);
-    return res.status(503).json({ message: 'Lỗi dịch vụ, thử lại sau' });
+    console.error("WORD GET WORD PACK ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };
 
@@ -88,14 +87,12 @@ exports.getSearchWord = async (req, res) => {
     const list = await searchWord(
       word,
       20,
-      isCompact == 'true'
-        ? '-_id word'
-        : '-_id type word mean phonetic picture',
+      isCompact == "true" ? "-_id word" : "-_id type word mean phonetic picture"
     );
     return res.status(200).json({ packList: list });
   } catch (error) {
-    console.error('GET SEARCH WORD ERROR: ', error);
-    return res.status(503).json({ message: 'Lỗi dịch vụ, thử lại sau' });
+    console.error("GET SEARCH WORD ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };
 
@@ -107,8 +104,8 @@ exports.getWordDetails = async (req, res, next) => {
       return res.status(200).json(wordDetail);
     }
   } catch (error) {
-    console.error('GET WORD DETAILS ERROR: ', error);
-    return res.status(503).json({ message: 'Lỗi dịch vụ, thử lại sau' });
+    console.error("GET WORD DETAILS ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };
 
@@ -116,7 +113,7 @@ exports.getUserFavoriteList = async (req, res, next) => {
   try {
     const { user } = req;
     if (!user || !user.favoriteList) {
-      return res.status(400).json({ message: 'failed' });
+      return res.status(400).json({ message: "failed" });
     }
 
     const { favoriteList } = user;
@@ -129,9 +126,9 @@ exports.getUserFavoriteList = async (req, res, next) => {
     perPage = parseInt(perPage);
 
     let favoriteSorted = [...favoriteList];
-    if (sortType === 'asc') {
+    if (sortType === "asc") {
       favoriteSorted.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
-    } else if (sortType === 'desc') {
+    } else if (sortType === "desc") {
       favoriteSorted.sort((a, b) => (a > b ? -1 : a < b ? 1 : 0));
     }
     favoriteSorted = favoriteSorted.slice((page - 1) * perPage, page * perPage);
@@ -140,7 +137,7 @@ exports.getUserFavoriteList = async (req, res, next) => {
 
     return res.status(200).json({ packList });
   } catch (error) {
-    console.error(' ERROR: ', error);
-    return res.status(500).json({ message: 'Lỗi dịch vụ, thử lại sau' });
+    console.error(" ERROR: ", error);
+    return res.status(500).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };

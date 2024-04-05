@@ -1,10 +1,10 @@
-const { MIN } = require('../constant');
+const { MIN } = require("../../../../constant");
 
 const generateWrongWordList = (
-  word = '',
+  word = "",
   synonyms = [],
   list = [],
-  isCheck = false,
+  isCheck = false
 ) => {
   const n = list.length;
   if (!n || n <= 3) {

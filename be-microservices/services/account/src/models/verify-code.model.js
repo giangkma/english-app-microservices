@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { MAX } = require('../constant');
+const mongoose = require("mongoose");
+const { MAX } = require("../../../../constant");
 const Schema = mongoose.Schema;
 
 const verifyCodeSchema = new Schema({
@@ -23,9 +23,9 @@ const verifyCodeSchema = new Schema({
 });
 
 const VerifyCodeModel = mongoose.model(
-  'verifyCode',
+  "verifyCode",
   verifyCodeSchema,
-  'verifyCodes',
+  "verifyCodes"
 );
 
 module.exports = VerifyCodeModel;

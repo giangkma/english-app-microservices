@@ -17,7 +17,7 @@ const {
   checkVerifyCode,
   removeVerifyCode,
 } = require("../services/account.service");
-const { ACCOUNT_TYPES, MAX } = require("../constant");
+const { ACCOUNT_TYPES, MAX } = require("../../../../constant");
 const jwtConfig = require("../configs/jwt.config");
 const mailConfig = require("../configs/mail.config");
 

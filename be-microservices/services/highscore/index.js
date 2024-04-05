@@ -2,20 +2,15 @@
 const express = require("express");
 const cors = require("cors");
 
-const corsConfig = require("../../configs/cors.config");
-
 // import local file
 const { MAX } = require("../../constant");
-const wordApi = require("./src/apis/word.api");
-const gameApi = require("./src/apis/game.api");
-const flashcardApi = require("./src/apis/flashcard.api");
-const sentenceApi = require("./src/apis/sentence.api");
-const blogApi = require("./src/apis/blog.api");
+const corsConfig = require("../../configs/cors.config");
+const highscoreApi = require("./src/apis/highscore.api");
 
 // ================== set port ==================
 const app = express();
 const normalizePort = (port) => parseInt(port, 10);
-const PORT = normalizePort(process.env.STUDY_PORT || 3000);
+const PORT = normalizePort(process.env.HIGHSCORE_PORT || 3000);
 
 // ================== setup ==================
 const dev = app.get("env") !== "production";
@@ -25,7 +20,7 @@ const mongoose = require("mongoose");
 
 const MONGO_URL =
   (dev ? process.env.MONGO_URL_LOCAL : process.env.MONGO_URL) +
-  process.env.STUDY_DB_NAME;
+  process.env.HIGHSCORE_DB_NAME;
 
 mongoose.connect(MONGO_URL, {
   useUnifiedTopology: true,
@@ -38,14 +33,10 @@ app.use(express.json({ limit: MAX.SIZE_JSON_REQUEST }));
 app.use(express.urlencoded({ limit: MAX.SIZE_JSON_REQUEST }));
 app.use(cors(corsConfig));
 
-// ================== Apis ==================
-app.use(`/word`, wordApi);
-app.use(`/games`, gameApi);
-app.use(`/flashcard`, flashcardApi);
-app.use(`/sentence`, sentenceApi);
-app.use(`/blog`, blogApi);
-
 // ================== Listening ... ==================
 app.listen(PORT, () => {
-  console.log(`Study Service: ${PORT}`);
+  console.log(`Highscore Service: ${PORT}`);
 });
+
+// ================== Apis ==================
+app.use(highscoreApi);

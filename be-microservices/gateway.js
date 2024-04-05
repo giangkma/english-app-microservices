@@ -1,14 +1,24 @@
-const express = require('express');
-const cors = require('cors');
-const proxy = require('express-http-proxy');
+// set environment variables
+require("dotenv").config();
+
+const express = require("express");
+const cors = require("cors");
+const proxy = require("express-http-proxy");
 
 const app = express();
 
-app.use(cors());
+const corsConfig = require("./configs/cors.config");
+
+app.use(cors(corsConfig));
 app.use(express.json());
 
-app.use('/account', proxy('http://localhost:8001'))
+app.use("/account", proxy("http://localhost:" + process.env.ACCOUNT_PORT));
+app.use("/highscore", proxy("http://localhost:" + process.env.HIGHSCORE_PORT));
+app.use("/", proxy("http://localhost:" + process.env.STUDY_PORT));
 
-app.listen(8000, () => {
-    console.log('Gateway is Listening to Port 8000')
-})
+const normalizePort = (port) => parseInt(port, 10);
+const PORT = normalizePort(process.env.GATE_WAY_PORT || 3000);
+
+app.listen(PORT, () => {
+  console.log("Gateway: ", PORT);
+});

@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const { MAX, DEFAULT } = require('../constant');
+const mongoose = require("mongoose");
+const { MAX, DEFAULT } = require("../../../../constant");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  accountId: { type: Schema.Types.ObjectId, required: true, ref: 'account' },
+  accountId: { type: Schema.Types.ObjectId, required: true, ref: "account" },
   name: { type: String, trim: true, required: true, maxLength: MAX.NAME_LEN },
   username: {
     type: String,
@@ -12,7 +12,7 @@ const userSchema = new Schema({
     unique: true,
     maxLength: MAX.USER_NAME,
   },
-  avt: { type: String, trim: true, default: '' },
+  avt: { type: String, trim: true, default: "" },
   coin: {
     type: Number,
     required: true,
@@ -23,6 +23,6 @@ const userSchema = new Schema({
   favoriteList: [String],
 });
 
-const UserModel = mongoose.model('user', userSchema, 'users');
+const UserModel = mongoose.model("user", userSchema, "users");
 
 module.exports = UserModel;

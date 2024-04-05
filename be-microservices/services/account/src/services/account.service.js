@@ -1,4 +1,4 @@
-const { ACCOUNT_TYPES, MAX } = require("../constant");
+const { ACCOUNT_TYPES, MAX } = require("../../../../constant");
 const { hashPassword } = require("../helper");
 const AccountModel = require("../models/account.model");
 const VerifyCodeModel = require("../models/verify-code.model");
@@ -250,8 +250,7 @@ exports.getUserInfoByAccountId = async (accountId = "") => {
     const user = await UserModel.findOne({ accountId }).select(
       "-_id username name avt favoriteList coin"
     );
-
-    if (user) return user;
+    if (user) return user._doc;
     return null;
   } catch (error) {
     throw error;

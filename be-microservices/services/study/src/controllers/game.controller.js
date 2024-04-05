@@ -1,6 +1,6 @@
-const { MAX } = require('../constant');
-const { randomWordQuestionPack } = require('../helper/game.helper');
-const { getWordPack } = require('../services/common.service');
+const { MAX } = require("../../../../constant");
+const { randomWordQuestionPack } = require("../helper/game.helper");
+const { getWordPack } = require("../services/word.service");
 
 // ======== CORRECT WORD GAME ========
 exports.getWordPackCWG = async (req, res, next) => {
@@ -14,7 +14,7 @@ exports.getWordPackCWG = async (req, res, next) => {
       packInfo,
       0,
       1500,
-      '-_id word mean phonetic synonyms',
+      "-_id word mean phonetic synonyms"
     );
 
     const packLen = packages.length > nQuestion ? nQuestion : packages.length;
@@ -25,8 +25,8 @@ exports.getWordPackCWG = async (req, res, next) => {
     const wordPack = randomWordQuestionPack(packages, packLen);
     return res.status(200).json({ wordPack });
   } catch (error) {
-    console.error('GET WORD PACK CWG ERROR: ', error);
-    return res.status(503).json({ message: 'Lỗi dịch vụ, thử lại sau' });
+    console.error("GET WORD PACK CWG ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };
 
@@ -37,7 +37,7 @@ exports.getWordPackWMG = async (req, res, next) => {
     nQuestion = parseInt(nQuestion);
     if (nQuestion > MAX.LEN_WORD_PACK) nQuestion = MAX.LEN_WORD_PACK;
 
-    const seedList = await getWordPack(packInfo, 0, 1500, '-_id word mean');
+    const seedList = await getWordPack(packInfo, 0, 1500, "-_id word mean");
     if (seedList) {
       return res.status(200).json({
         wordPack: seedList.sort((_) => Math.random() - 0.5).slice(0, nQuestion),
@@ -46,8 +46,8 @@ exports.getWordPackWMG = async (req, res, next) => {
 
     return res.status(200).json({ wordPack: [] });
   } catch (error) {
-    console.error('GET WORD PACK WMG ERROR: ', error);
-    return res.status(503).json({ message: 'Lỗi dịch vụ, thử lại sau' });
+    console.error("GET WORD PACK WMG ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };
 
@@ -59,7 +59,7 @@ exports.getWordPackFS = async (req, res, next) => {
       { topics: [topic] },
       0,
       1500,
-      '-_id word picture',
+      "-_id word picture"
     );
 
     const nQuestion = 100;
@@ -67,7 +67,7 @@ exports.getWordPackFS = async (req, res, next) => {
 
     return res.status(200).json({ wordPack });
   } catch (error) {
-    console.error('GET WORD PACK FAST GAME ERROR: ', error);
-    return res.status(500).json({ message: 'Lỗi dịch vụ, thử lại sau' });
+    console.error("GET WORD PACK FAST GAME ERROR: ", error);
+    return res.status(500).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };

@@ -1,12 +1,12 @@
-const { MAX_TOP, HIGHSCORE_NAME } = require('../constant/highscore');
-const UserModel = require('../models/account.model/user.model');
-const HighscoreModel = require('../models/highscore.model');
+const { publishAccountEvent } = require("../../../../utils/publish-events");
+const { MAX_TOP, HIGHSCORE_NAME } = require("../constant");
+const HighscoreModel = require("../models/highscore.model");
 
 exports.updateTop = async (accountId, name, score) => {
   try {
     let tops = await HighscoreModel.findOne({ name });
 
-    let unit = '';
+    let unit = "";
     for (let key in HIGHSCORE_NAME) {
       if (HIGHSCORE_NAME[key].name === name) {
         unit = HIGHSCORE_NAME[key].unit;
@@ -24,7 +24,7 @@ exports.updateTop = async (accountId, name, score) => {
       });
     } else {
       const index = tops.top.findIndex(
-        (i) => i.accountId.toString() === accountId.toString(),
+        (i) => i.accountId.toString() === accountId.toString()
       );
 
       if (index === -1) {
@@ -48,7 +48,7 @@ exports.updateTop = async (accountId, name, score) => {
   }
 };
 
-exports.getLeaderboardWithName = async (name = '') => {
+exports.getLeaderboardWithName = async (name = "") => {
   try {
     const highscores = await HighscoreModel.findOne({ name });
     if (!Boolean(highscores)) {
@@ -59,12 +59,17 @@ exports.getLeaderboardWithName = async (name = '') => {
     let topList = [];
 
     for (let i = 0; i < l; ++i) {
-      const { name, avt } = await UserModel.findOne({
-        accountId: top[i].accountId,
-      }).select('name avt -_id');
+      const {
+        data: { name, avt },
+      } = await publishAccountEvent({
+        event: "GET_USER_INFO_BY_ACCOUNT_ID",
+        data: {
+          accountId: top[i].accountId,
+        },
+      });
 
       topList.push({
-        name: name || 'Anonymous',
+        name: name || "Anonymous",
         avt,
         score: top[i].score,
       });
