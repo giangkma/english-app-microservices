@@ -37,6 +37,7 @@ exports.jwtAuthentication = async (req, res, next) => {
 
     // verify jwt
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
     if (decoded) {
       const { accountId } = decoded.sub;
       const { data } = await publishAccountEvent({

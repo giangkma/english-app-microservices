@@ -1,4 +1,3 @@
-import commonApi from 'apis/commonApi';
 import flashcardApi from 'apis/flashcardApi';
 import { equalArray } from 'helper';
 import React, { useEffect, useRef, useState } from 'react';
@@ -33,7 +32,7 @@ function FlashcardData() {
 
     (async function getTotalWordPack() {
       try {
-        const apiRes = await commonApi.getWordPackTotal(pageInfo.packInfo);
+        const apiRes = await flashcardApi.getWordPackTotal(pageInfo.packInfo);
 
         if (apiRes.status === 200 && isSubscribe) {
           const { total = 0 } = apiRes.data;

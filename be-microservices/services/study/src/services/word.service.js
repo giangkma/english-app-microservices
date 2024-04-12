@@ -1,3 +1,4 @@
+const { convertPackInfoToQueryStr } = require("../helper/word-pack.helper");
 const WordModel = require("../models/word.model");
 
 exports.createNewWord = async (wordInfo) => {

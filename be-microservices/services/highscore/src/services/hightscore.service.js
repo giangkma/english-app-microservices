@@ -14,10 +14,12 @@ exports.updateTop = async (accountId, name, score) => {
       }
     }
 
+    let result = null;
+
     let newTops = [];
     if (!Boolean(tops)) {
       newTops.push({ accountId, score: Number(score) });
-      HighscoreModel.create({
+      result = await HighscoreModel.create({
         name,
         unit,
         top: newTops,
@@ -41,7 +43,11 @@ exports.updateTop = async (accountId, name, score) => {
         .sort((a, b) => Number(a.score) - Number(b.score))
         .slice(0, MAX_TOP);
 
-      await HighscoreModel.updateOne({ name }, { top: newTops });
+      result = await HighscoreModel.updateOne({ name }, { top: newTops });
+    }
+
+    if (result.ok) {
+      return true;
     }
   } catch (error) {
     throw error;

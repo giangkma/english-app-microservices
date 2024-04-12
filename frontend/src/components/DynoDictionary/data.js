@@ -1,4 +1,4 @@
-import commonApi from 'apis/commonApi';
+import flashcardApi from 'apis/flashcardApi';
 import wordApi from 'apis/wordApi';
 import WordDetailModal from 'components/UI/WordDetailModal';
 import { TOEIC_KEY } from 'constant/topics';
@@ -83,7 +83,7 @@ function DynoDictionaryData({ isTOEIC }) {
 
     (async function () {
       try {
-        const apiRes = await commonApi.getWordPackTotal(packInfo);
+        const apiRes = await flashcardApi.getWordPackTotal(packInfo);
         if (apiRes.status === 200 && isSub) {
           const { total = 0 } = apiRes.data;
           totalPage.current = Math.ceil(total / perPage);

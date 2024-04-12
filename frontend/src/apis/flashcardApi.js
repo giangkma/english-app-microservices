@@ -8,6 +8,11 @@ const flashcardApi = {
       params: { page, perPage, packInfo: JSON.stringify(packInfo) },
     });
   },
+  getWordPackTotal: (packInfo) => {
+    return axiosClient.get(`${URL}/word-pack/total`, {
+      params: { packInfo: JSON.stringify(packInfo) },
+    });
+  },
 };
 
 export default flashcardApi;

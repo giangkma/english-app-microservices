@@ -188,6 +188,7 @@ exports.putUpdateAvt = async (req, res, next) => {
       return res.status(400).json({ message: "failed" });
     }
     const update = await updateAvt(user.username, avtSrc);
+
     if (!update) {
       return res.status(400).json({ message: "failed" });
     }
