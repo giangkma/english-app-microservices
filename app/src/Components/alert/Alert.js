@@ -1,7 +1,8 @@
-import React from 'react';
 import { Text, View } from 'react-native-ui-lib';
-import { StyleSheet } from 'react-native';
+
 import { Colors } from 'assets';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 
 export const Alert = ({ message, isSuccess, clearMessage, ...props }) => {
     if (!message) return null;

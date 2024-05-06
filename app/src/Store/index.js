@@ -1,20 +1,20 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { combineReducers } from 'redux';
 import {
-    persistReducer,
-    persistStore,
     FLUSH,
-    REHYDRATE,
     PAUSE,
     PERSIST,
     PURGE,
     REGISTER,
+    REHYDRATE,
+    persistReducer,
+    persistStore,
 } from 'redux-persist';
-import { configureStore } from '@reduxjs/toolkit';
 
-import theme from './theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from './auth';
+import { combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import flashCards from './flashCards';
+import theme from './theme';
 
 const reducers = combineReducers({
     theme,

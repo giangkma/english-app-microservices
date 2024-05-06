@@ -1,7 +1,4 @@
-import { Images, Close } from 'assets';
-import { Colors } from 'assets/Colors';
-import { PrimaryButton } from 'screens';
-import React from 'react';
+import { Close, Images } from 'assets';
 import {
     ImageBackground,
     Modal as ModalUI,
@@ -10,6 +7,10 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
+
+import { Colors } from 'assets/Colors';
+import { PrimaryButton } from 'screens';
+import React from 'react';
 
 export const Modal = ({
     visible,

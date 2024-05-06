@@ -1,11 +1,5 @@
-import { accountApi } from 'apis';
 import { ArrowLeft, Code, Email, Lock, Person } from 'assets';
-import { Config } from 'config';
-import { navigate } from 'navigators/utils';
-import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ScrollView, TouchableOpacity } from 'react-native';
-import { Text, View } from 'react-native-ui-lib';
 import {
     Layout,
     LoadingScreen,
@@ -13,6 +7,13 @@ import {
     PrimaryButton,
     StyledTextInput,
 } from 'screens';
+import React, { useState } from 'react';
+import { ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View } from 'react-native-ui-lib';
+
+import { Config } from 'config';
+import { accountApi } from 'apis';
+import { navigate } from 'navigators/utils';
 import { showAlert } from 'utilities';
 
 export const ForgotPasswordScreen = () => {

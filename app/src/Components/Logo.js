@@ -1,7 +1,7 @@
+import { Image } from 'react-native-ui-lib';
 import { Images } from 'assets';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Image } from 'react-native-ui-lib';
 import { scaleSize } from 'utilities';
 
 export const Logo = ({ height, width, mode }) => {

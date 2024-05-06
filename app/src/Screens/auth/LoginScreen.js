@@ -1,16 +1,17 @@
-import { accountApi } from 'apis';
 import { Code, Email, Lock } from 'assets';
-import { Config } from 'config';
-import { navigate } from 'navigators/utils';
-import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TouchableOpacity } from 'react-native';
-import { Text, View } from 'react-native-ui-lib';
-import { useDispatch } from 'react-redux';
 import { LoadingScreen, PrimaryButton, StyledTextInput } from 'screens';
-import { setUser } from 'store/auth';
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native-ui-lib';
 import { showAlert, tokenStorage } from 'utilities';
+
 import { AuthLayout } from './components';
+import { Config } from 'config';
+import { TouchableOpacity } from 'react-native';
+import { accountApi } from 'apis';
+import { navigate } from 'navigators/utils';
+import { setUser } from 'store/auth';
+import { useDispatch } from 'react-redux';
 
 export const LoginScreen = ({ route }) => {
     const [loading, setLoading] = useState(false);
@@ -79,7 +80,7 @@ export const LoginScreen = ({ route }) => {
                     rules={{
                         required: 'Username is required',
                         pattern: {
-                            value: Config.STRING_REGEX,
+                            value: Config.EMAIL_REGEX,
                             message: 'Username is invalid',
                         },
                     }}

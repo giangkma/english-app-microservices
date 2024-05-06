@@ -1,8 +1,9 @@
-import { StyleSheet } from 'react-native';
 import { Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import { scaleSize, screenSize } from 'utilities';
-import React from 'react';
+
 import { Heart } from 'assets';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 
 export const FavoriteWordCard = ({ favoriteWord, onUnFavoriteWord }) => {
     return (
@@ -22,7 +23,13 @@ export const FavoriteWordCard = ({ favoriteWord, onUnFavoriteWord }) => {
             />
 
             <View paddingL-16 maxWidth={screenSize.width - scaleSize(100)}>
-                <View row centerV width={'100%'} paddingR-10 style={{ justifyContent: 'space-between' }}>
+                <View
+                    row
+                    centerV
+                    width={'100%'}
+                    paddingR-10
+                    style={{ justifyContent: 'space-between' }}
+                >
                     <View>
                         <Text padding-10 font-light white fs15>
                             {favoriteWord.word} ({favoriteWord.type})
@@ -32,7 +39,9 @@ export const FavoriteWordCard = ({ favoriteWord, onUnFavoriteWord }) => {
                             {favoriteWord.phonetic}&nbsp;]
                         </Text>
                     </View>
-                    <TouchableOpacity onPress={() => onUnFavoriteWord(favoriteWord.word)}>
+                    <TouchableOpacity
+                        onPress={() => onUnFavoriteWord(favoriteWord.word)}
+                    >
                         <Text>❌</Text>
                     </TouchableOpacity>
                 </View>

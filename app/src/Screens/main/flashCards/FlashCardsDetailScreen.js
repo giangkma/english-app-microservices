@@ -1,5 +1,5 @@
-// @format
-import { accountApi, flashcardApi } from 'apis';
+import * as Progress from 'react-native-progress';
+
 import {
     ArrowLeft,
     ArrowRight,
@@ -7,28 +7,30 @@ import {
     HeartActive,
     Option,
     Pause,
-    Speaker,
     Play,
+    Speaker,
 } from 'assets';
+import { Image, Text, View } from 'react-native-ui-lib';
 import { LoadingScreen, Modal, StackLayout } from 'components';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
+    Platform,
     ScrollView,
     StyleSheet,
     TouchableOpacity,
-    Platform,
 } from 'react-native';
-import * as Progress from 'react-native-progress';
-import Carousel from 'react-native-snap-carousel';
-import { Image, Text, View } from 'react-native-ui-lib';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+// @format
+import { accountApi, flashcardApi } from 'apis';
 import { getFlashCardsSettings, learnedWord } from 'store/flashCards';
 import { scaleSize, screenSize, showAlert } from 'utilities';
-import { FlashCardSettings } from '../components';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Carousel from 'react-native-snap-carousel';
 import { Config } from 'config';
+import { FlashCardSettings } from '../components';
 import Tts from 'react-native-tts';
-import { useAuth } from 'hooks';
 import { addWordToFavoriteList } from 'store/auth';
+import { useAuth } from 'hooks';
 import { useFocusEffect } from '@react-navigation/native';
 
 const compareTime = (createdAt, hours) => {

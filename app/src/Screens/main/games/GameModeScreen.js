@@ -1,15 +1,16 @@
-import { Images } from 'assets';
-import { StackLayout, LoadingScreen } from 'components';
-import { navigate, navigateAndReset } from 'navigators/utils';
-import { Text, View } from 'react-native-ui-lib';
-import { useSelector } from 'react-redux';
 import { FlashCardInfo, GameCard } from 'screens/main/components';
+import { LoadingScreen, StackLayout } from 'components';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Text, View } from 'react-native-ui-lib';
 import { getFlashCardsTopics, setTopics } from 'store/flashCards';
-import React, { useEffect, useState, useCallback } from 'react';
+import { navigate, navigateAndReset } from 'navigators/utils';
+
+import { Config } from 'config';
+import { Images } from 'assets';
 import { rankApi } from 'apis';
 import { showAlert } from 'utilities';
-import { Config } from 'config';
 import { useFocusEffect } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 export const GameModeScreen = ({ navigation, route }) => {
     const { game } = route.params;

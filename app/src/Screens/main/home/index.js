@@ -1,15 +1,16 @@
-import { accountApi, topicApi, wordApi } from 'apis';
 import { Icons, Images, Menu, Search } from 'assets';
-import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ScrollView, TouchableOpacity } from 'react-native';
 import { Image, Text, View } from 'react-native-ui-lib';
-import { useDispatch, useSelector } from 'react-redux';
-import { Layout } from 'screens';
+import React, { useEffect } from 'react';
+import { ScrollView, TouchableOpacity } from 'react-native';
+import { accountApi, topicApi, wordApi } from 'apis';
 import { getFavoriteList, setFavoriteList, setUser } from 'store/auth';
-import { setTopics } from 'store/flashCards';
 import { scaleSize, showAlert } from 'utilities';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { HomeCard } from '../components';
+import { Layout } from 'screens';
+import { setTopics } from 'store/flashCards';
+import { useTranslation } from 'react-i18next';
 
 export const HomeScreen = ({ navigation }) => {
     const { t } = useTranslation();

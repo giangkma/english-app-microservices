@@ -1,9 +1,10 @@
+import React, { useState } from 'react';
+
+import { GameCard } from 'screens/main/components/GameCard';
 import { Images } from 'assets';
 import { StackLayout } from 'components/layouts';
-import { navigate } from 'navigators/utils';
 import { View } from 'react-native-ui-lib';
-import { GameCard } from 'screens/main/components/GameCard';
-import React, { useState } from 'react';
+import { navigate } from 'navigators/utils';
 
 export const GamesScreen = () => {
     return (
@@ -22,9 +23,7 @@ export const GamesScreen = () => {
                     <GameCard
                         image={Images.soccer}
                         name={'Soccer'}
-                        onPress={() =>
-                            navigate('Soccer')
-                        }
+                        onPress={() => navigate('Soccer')}
                     />
                 </View>
             </View>

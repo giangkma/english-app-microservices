@@ -1,7 +1,7 @@
-import { Alert } from 'react-native';
 import {
     Person0,
     Person1,
+    Person10,
     Person2,
     Person3,
     Person4,
@@ -10,8 +10,9 @@ import {
     Person7,
     Person8,
     Person9,
-    Person10,
 } from 'assets';
+
+import { Alert } from 'react-native';
 import React from 'react';
 
 export const showAlert = (subTitle, title = 'Error') => {

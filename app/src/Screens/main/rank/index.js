@@ -1,13 +1,14 @@
 import { LoadingScreen, StackLayout } from 'components';
-import { Text, View } from 'react-native-ui-lib';
 import React, { useEffect, useState } from 'react';
-import { PlayerRankCard } from 'screens/main/components';
-import { showAlert } from 'utilities';
-import { rankApi } from 'apis';
-import { useFocusEffect } from '@react-navigation/native';
-import { Images } from 'assets';
+import { Text, View } from 'react-native-ui-lib';
+
 import { GameCard } from 'screens/main/components/GameCard';
+import { Images } from 'assets';
+import { PlayerRankCard } from 'screens/main/components';
 import { navigate } from 'navigators/utils';
+import { rankApi } from 'apis';
+import { showAlert } from 'utilities';
+import { useFocusEffect } from '@react-navigation/native';
 
 export const RankScreen = () => {
     const [ranks, setRanks] = useState([]);

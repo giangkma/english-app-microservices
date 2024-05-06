@@ -1,9 +1,10 @@
 import { Image, Text, View } from 'react-native-ui-lib';
-import { Images } from 'assets';
 import { getInitials, scaleSize } from 'utilities';
-import { StyleSheet } from 'react-native';
-import React from 'react';
+
 import { Colors } from 'assets/Colors';
+import { Images } from 'assets';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import { images } from 'assets/Images';
 
 export const PlayerRankCard = ({ isYou, item }) => {

@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
-import Score from './components/Score';
-import Emoji from './components/Emoji';
-import SoccerIcon from '../../../assets/images/soccer.png';
+import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import { Layout, LoadingScreen, PrimaryButton } from 'components';
-import { navigate } from 'navigators/utils';
-import { showAlert } from 'utilities';
-import { rankApi } from 'apis';
+import React, { Component } from 'react';
+
 import { Colors } from 'assets/Colors';
+import Emoji from './components/Emoji';
+import Score from './components/Score';
+import SoccerIcon from 'assets/images/soccer.png';
 import Sound from 'react-native-sound';
-import audioLost from '../../../assets/audios/lost.mp3';
+import audioLost from 'assets/audios/lost.mp3';
+import { navigate } from 'navigators/utils';
+import { rankApi } from 'apis';
+import { showAlert } from 'utilities';
 
 const LC_IDLE = 0;
 const LC_TAPPED = 2;
@@ -27,7 +28,7 @@ const SCORE_Y = SCREEN_HEIGHT / 6;
 const EMOJI_Y = SCREEN_HEIGHT / 3;
 
 class SoccerGameScreen extends Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.interval = null;
         this.state = {
@@ -48,21 +49,21 @@ class SoccerGameScreen extends Component {
     sound = new Sound(audioLost);
 
     playSound = () => {
-        this.sound?.play()
-    }
+        this.sound?.play();
+    };
 
-    componentDidMount () {
+    componentDidMount() {
         this.interval = setInterval(this.update.bind(this), 1000 / 60);
         this.getRanks();
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         if (this.interval) {
             clearInterval(this.interval);
         }
     }
 
-    onTap (event) {
+    onTap(event) {
         this.playSound();
         // this.setState({
         //     scored: false,
@@ -82,7 +83,7 @@ class SoccerGameScreen extends Component {
         // return false;
     }
 
-    updatePosition (nextState) {
+    updatePosition(nextState) {
         nextState.x += nextState.vx;
         nextState.y += nextState.vy;
         nextState.rotate += ROTATION_FACTOR * nextState.vx;
@@ -110,7 +111,7 @@ class SoccerGameScreen extends Component {
         }
     }
 
-    async getRanks () {
+    async getRanks() {
         try {
             this.setState({ loading: true });
             const { ranks, rankOfUser } = await rankApi.getRanks('soccer');
@@ -125,7 +126,7 @@ class SoccerGameScreen extends Component {
         }
     }
 
-    async updateScore () {
+    async updateScore() {
         try {
             if (this.state.score !== 0) {
                 await rankApi.putScore('soccer', this.state.score);
@@ -138,11 +139,11 @@ class SoccerGameScreen extends Component {
         }
     }
 
-    updateVelocity (nextState) {
+    updateVelocity(nextState) {
         nextState.vy += GRAVITY;
     }
 
-    update () {
+    update() {
         if (this.state.lifeCycle === LC_IDLE) {
             return;
         }
@@ -155,7 +156,7 @@ class SoccerGameScreen extends Component {
         this.setState(nextState);
     }
 
-    render () {
+    render() {
         const position = {
             left: this.state.x - BALL_WIDTH / 2,
             top: this.state.y - BALL_HEIGHT / 2,

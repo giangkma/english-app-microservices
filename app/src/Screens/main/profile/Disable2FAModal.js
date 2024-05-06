@@ -1,9 +1,10 @@
-import { Code } from 'assets';
 import { Controller, useForm } from 'react-hook-form';
 import { Modal, StyledTextInput } from 'screens';
-import { showAlert } from 'utilities';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { Code } from 'assets';
 import { Config } from 'config';
+import { showAlert } from 'utilities';
 import { twoFAApi } from 'apis';
 import { useDispatch } from 'react-redux';
 

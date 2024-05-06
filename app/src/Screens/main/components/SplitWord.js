@@ -1,13 +1,14 @@
-import { LoadingScreen, PrimaryButton, StackLayout } from 'components';
-import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Heart, HeartActive, Person2, ResultWord } from 'assets';
-import { StyleSheet } from 'react-native';
-import { Colors } from 'assets/Colors';
+import { LoadingScreen, PrimaryButton, StackLayout } from 'components';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import { gameApi, wordApi } from 'apis';
 import { randomPersonIcon, scaleSize, screenSize, showAlert } from 'utilities';
-import { WordResultModal } from './WordResultModal';
+
+import { Colors } from 'assets/Colors';
 import { Config } from 'config';
+import { StyleSheet } from 'react-native';
+import { WordResultModal } from './WordResultModal';
 import { navigate } from 'navigators/utils';
 
 const splitWord = (word = '') => {

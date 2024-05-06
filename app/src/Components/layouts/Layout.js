@@ -1,16 +1,21 @@
-import { Images } from 'assets';
-import React from 'react';
 import {
     ImageBackground,
+    Platform,
     ScrollView,
     StyleSheet,
-    Platform,
 } from 'react-native';
+
+import { Images } from 'assets';
+import React from 'react';
 import { View } from 'react-native-ui-lib';
 import { scaleSize } from 'utilities';
 
 export const Layout = ({ children, bg2, bg3, isScroll }) => {
-    const bg = bg2 ? Images.background2 : bg3 ? Images.stadium : Images.background1;
+    const bg = bg2
+        ? Images.background2
+        : bg3
+        ? Images.stadium
+        : Images.background1;
     return (
         <ImageBackground
             source={bg}

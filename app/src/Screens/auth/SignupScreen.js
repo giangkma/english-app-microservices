@@ -1,13 +1,14 @@
-import { accountApi } from 'apis';
 import { Code, Email, Lock, Person } from 'assets';
-import { navigate } from 'navigators/utils';
-import { LoadingScreen, PrimaryButton, StyledTextInput } from 'screens';
-import { showAlert } from 'utilities';
-import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { View } from 'react-native-ui-lib';
+import { LoadingScreen, PrimaryButton, StyledTextInput } from 'screens';
+import React, { useState } from 'react';
+
 import { AuthLayout } from './components';
 import { Config } from 'config';
+import { View } from 'react-native-ui-lib';
+import { accountApi } from 'apis';
+import { navigate } from 'navigators/utils';
+import { showAlert } from 'utilities';
 
 export const SignupScreen = () => {
     const [loading, setLoading] = useState(false);
