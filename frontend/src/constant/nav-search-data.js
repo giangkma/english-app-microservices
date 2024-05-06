@@ -24,9 +24,9 @@ const NAV_SEARCH_DATA = [
     to: ROUTES.FLASHCARD,
   },
   {
-    title: 'từ điển English 247',
+    title: 'từ điển Amonino',
     searchKey:
-      'danh sách từ phân loại cấp độ vocabulary dictionary level type list English 247',
+      'danh sách từ phân loại cấp độ vocabulary dictionary level type list Amonino',
     to: ROUTES.DYNO_DICTIONARY,
   },
   {

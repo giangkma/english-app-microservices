@@ -1,19 +1,20 @@
-import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+import { MAX, ROUTES } from 'constant';
+import React, { useState } from 'react';
+
 import Button from '@material-ui/core/Button';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import InputCustom from 'components/UI/InputCustom';
+import { Link } from 'react-router-dom';
 import LockIcon from '@material-ui/icons/Lock';
 import LoopIcon from '@material-ui/icons/Loop';
+import PropTypes from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import SocialNetworkLogin from 'components/Login/SocialNetwork';
-import InputCustom from 'components/UI/InputCustom';
 import { formStyle } from 'components/UI/style';
-import { MAX, ROUTES } from 'constant';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const schema = yup.object().shape({
   email: yup
@@ -123,11 +124,7 @@ function LoginLocalForm(props) {
 }
 
 function Login(props) {
-  return (
-    <LoginLocalForm {...props}>
-      <SocialNetworkLogin />
-    </LoginLocalForm>
-  );
+  return <LoginLocalForm {...props}></LoginLocalForm>;
 }
 
 Login.propTypes = {

@@ -1,18 +1,19 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import Button from '@material-ui/core/Button';
+import * as yup from 'yup';
+
+import { MAX, MIN, REGEX } from 'constant';
+import React, { useState } from 'react';
+
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Button from '@material-ui/core/Button';
+import InputCustom from 'components/UI/InputCustom';
 import LoopIcon from '@material-ui/icons/Loop';
+import PropTypes from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import SocialNetworkLogin from 'components/Login/SocialNetwork';
-import InputCustom from 'components/UI/InputCustom';
-import { MAX, MIN, REGEX } from 'constant';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import makeStyles from '@material-ui/core/styles/makeStyles';
 import { formStyle } from 'components/UI/style';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const schema = yup.object().shape({
   email: yup

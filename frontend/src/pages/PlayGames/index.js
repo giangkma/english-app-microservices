@@ -1,15 +1,15 @@
+import FeatureBox from 'components/FeatureBox';
 import Grid from '@material-ui/core/Grid';
+import { ROUTES } from 'constant';
+import React from 'react';
 import brainIcon from 'assets/icons/games/brain.png';
 import correctWordIcon from 'assets/icons/games/correct-word.png';
 import grammarlyIcon from 'assets/icons/games/grammarly.png';
 import jigsawIcon from 'assets/icons/games/jigsaw.png';
 import millionaireIcon from 'assets/icons/games/millionaire.png';
-import wordMatchingIcon from 'assets/icons/games/word-match.png';
-import FeatureBox from 'components/FeatureBox';
-import { ROUTES } from 'constant';
 import useScrollTop from 'hooks/useScrollTop';
 import useTitle from 'hooks/useTitle';
-import React from 'react';
+import wordMatchingIcon from 'assets/icons/games/word-match.png';
 
 const { GAMES } = ROUTES;
 
@@ -46,14 +46,14 @@ const GAME_LIST = [
   /*  {
     title: 'Ai là triệu phú',
     subTitle:
-      'Trải nghiệm game show truyền hình "Ai là triệu phú" phiên bản tiếng Anh ngay với English 247',
+      'Trải nghiệm game show truyền hình "Ai là triệu phú" phiên bản tiếng Anh ngay với Amonino',
     imgUrl: millionaireIcon,
     to: GAMES.MILLIONAIRE,
   },
   {
     title: 'Nối từ',
     subTitle:
-      'Cùng bắt trend nối từ đã từ rầm rộ trên mạng xã hội với Dyno nhé. Đặc biệt, bạn có thể chơi cùng bạn bè nhé 😮',
+      'Cùng bắt trend nối từ đã từ rầm rộ trên mạng xã hội với Amonino nhé. Đặc biệt, bạn có thể chơi cùng bạn bè nhé 😮',
     imgUrl: jigsawIcon,
     to: GAMES.JIGSAW,
   },
@@ -67,7 +67,7 @@ const GAME_LIST = [
   /*   {
     title: 'Game VIP',
     subTitle:
-      'Tận hưởng một game cực kỳ tuyệt vời của Dyno nhé, nâng cấp tài khoản VIP để chơi.',
+      'Tận hưởng một game cực kỳ tuyệt vời của Amonino nhé, nâng cấp tài khoản VIP để chơi.',
     imgUrl: vipIcon,
     to: GAMES.VIP,
   }, */

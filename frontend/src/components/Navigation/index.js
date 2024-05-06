@@ -1,19 +1,20 @@
+import React, { useState } from 'react';
+
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { Link } from 'react-router-dom';
+import { ROUTES } from 'constant';
 import Search from '@material-ui/icons/Search';
+import SearchInputCustom from 'components/UI/SearchInputCustom';
+import SettingMenu from './SettingMenu';
+import { cloudinaryImgOptimize } from 'helper';
 import defaultUserImg from 'assets/images/default-user.png';
 import logoUrl from 'assets/images/logo.png';
-import SearchInputCustom from 'components/UI/SearchInputCustom';
-import { ROUTES } from 'constant';
-import { cloudinaryImgOptimize } from 'helper';
-import React, { useState } from 'react';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import SettingMenu from './SettingMenu';
 import useStyle from './style';
+import { useTheme } from '@material-ui/core/styles';
 
 function Navigation() {
   const classes = useStyle();
@@ -40,7 +41,7 @@ function Navigation() {
               <p
                 className={`${classes.textHome}`}
                 style={{ fontSize: '25px', fontWeight: 'bold' }}>
-                English 247
+                Amonino
               </p>
             </Link>
           )}

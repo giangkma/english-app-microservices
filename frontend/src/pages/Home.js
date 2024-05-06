@@ -1,4 +1,7 @@
+import FeatureBox from 'components/FeatureBox';
 import Grid from '@material-ui/core/Grid';
+import { ROUTES } from 'constant';
+import React from 'react';
 import communicateIcon from 'assets/icons/communicate.png';
 import dictionaryIcon from 'assets/icons/dictionary.png';
 import editIcon from 'assets/icons/edit.png';
@@ -8,14 +11,11 @@ import friendsIcon from 'assets/icons/friends.png';
 import gameIcon from 'assets/icons/game.png';
 import grammarIcon from 'assets/icons/grammar.png';
 import ipaIcon from 'assets/icons/ipa.png';
-import toeicIcon from 'assets/icons/toeic.png';
-import verbIcon from 'assets/icons/verb.png';
 import medalIcon from 'assets/icons/medal.png';
-import FeatureBox from 'components/FeatureBox';
-import { ROUTES } from 'constant';
+import toeicIcon from 'assets/icons/toeic.png';
 import useScrollTop from 'hooks/useScrollTop';
 import useTitle from 'hooks/useTitle';
-import React from 'react';
+import verbIcon from 'assets/icons/verb.png';
 
 const FEATURE_LIST = [
   {
@@ -27,14 +27,14 @@ const FEATURE_LIST = [
   },
   {
     title: '600+ câu giao tiếp',
-    subTitle: 'Luyện nghe, nói câu tiếng Anh giao tiếp hàng ngày cùng Dyno',
+    subTitle: 'Luyện nghe, nói câu tiếng Anh giao tiếp hàng ngày cùng Amonino',
     imgUrl: communicateIcon,
     to: ROUTES.COMMUNICATION_PHRASE,
   },
   {
     title: 'Từ vựng với Flashcard',
     subTitle:
-      'Flashcard phương pháp học từ vựng nổi tiếng. Nay hoàn toàn miễn phí trên English 247',
+      'Flashcard phương pháp học từ vựng nổi tiếng. Nay hoàn toàn miễn phí trên Amonino',
     imgUrl: flashcardIcon,
     to: ROUTES.FLASHCARD,
   },
@@ -72,7 +72,7 @@ const FEATURE_LIST = [
     title: 'Play Games',
     imgUrl: gameIcon,
     subTitle:
-      'Ôn luyện kiến thức hiệu quả và đỡ nhàm chán hơn qua việc chơi game cùng Dyno nhé',
+      'Ôn luyện kiến thức hiệu quả và đỡ nhàm chán hơn qua việc chơi game cùng Amonino nhé',
     to: ROUTES.GAMES.HOME,
   },
   {
@@ -85,7 +85,7 @@ const FEATURE_LIST = [
     title: 'Đóng góp',
     imgUrl: editIcon,
     subTitle:
-      'Dyno rất mong được sự đóng góp của bạn. Bạn có thể thêm từ mới, sửa lỗi sai',
+      'Amonino rất mong được sự đóng góp của bạn. Bạn có thể thêm từ mới, sửa lỗi sai',
     to: ROUTES.CONTRIBUTION,
   },
 ];

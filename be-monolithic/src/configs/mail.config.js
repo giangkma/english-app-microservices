@@ -78,7 +78,7 @@ const htmlResetPassword = (token) => {
     ${headerHtmlMail}
     <h2 style="padding: 10px 0; margin-bottom: 10px;">
         Xin chào anh (chị),<br />
-        Dynon đã nhận được yêu cầu lấy lại mật khẩu từ bạn.<br />
+        Amonino đã nhận được yêu cầu lấy lại mật khẩu từ bạn.<br />
         Đừng lo lắng, hãy nhập mã này để khôi phục:
     </h2>
     <h1 style="background: #eee;padding: 10px;">

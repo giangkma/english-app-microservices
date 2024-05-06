@@ -10,21 +10,20 @@
 		"@material-ui/lab": "^4.0.0-alpha.58",
 		"@reduxjs/toolkit": "^1.6.0",
 		"axios": "^0.21.1",
+		"babel-eslint": "^10.1.0",
 		"compressorjs": "^1.0.7",
 		"query-string": "^7.0.0",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
-		"react-facebook-login": "^4.1.1",
-		"react-google-login": "^5.2.2",
 		"react-hook-form": "^7.8.4",
 		"react-redux": "^7.2.4",
 		"react-router-dom": "^5.2.0",
-		"react-scripts": "4.0.3",
+		"react-scripts": "^5.0.1",
 		"react-scroll": "^1.8.2",
 		"yup": "^0.32.9"
 	},
 	"scripts": {
-		"dev": "react-scripts start",
+		"dev": "react-scripts --openssl-legacy-provider start",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"deploy": "react-scripts build && firebase deploy",
@@ -52,7 +51,7 @@
 		"sass": "^1.34.1"
 	},
 	"engines": {
-		"node": "14.21.3",
-		"npm": "6.14.13"
+		"node": "20.10.0",
+		"npm": "10.2.3"
 	}
 }
