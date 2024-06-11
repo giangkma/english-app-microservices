@@ -6,7 +6,7 @@ import { scaleSize } from 'utilities';
 import { navigate } from 'navigators/utils';
 import { Config } from 'config';
 
-export const GameCard = ({
+export const TitleRow = ({
     name,
     image,
     uri,

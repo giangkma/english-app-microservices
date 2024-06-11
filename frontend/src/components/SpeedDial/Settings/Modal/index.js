@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ThemeSetting from '.theme';
+import ThemeSetting from '../Theme';
 import ToggleNavButton from '../ToggleNavButton';
 import VoiceSetting from '../Voice';
 import useStyle from './style';

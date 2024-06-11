@@ -3,6 +3,9 @@ const {
   createSentence,
   getTotalSentences: getTotalSentencesService,
   getSentenceList: getSentenceListService,
+  acceptSentences,
+  getDraftSentences,
+  deleteDraftsentences,
 } = require("../services/sentence.service");
 
 exports.postContributeSentence = async (req, res, next) => {
@@ -26,6 +29,49 @@ exports.postContributeSentence = async (req, res, next) => {
     return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   } catch (error) {
     console.error("POST CONTRIBUTE SENTENCE ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
+
+
+exports.postAdminAcceptSentences = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+
+    const isAcceptSuccess = await acceptSentences(ids);
+    if (isAcceptSuccess) {
+      return res.status(200).json({ message: "Duyệt câu thành công" });
+    }
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  } catch (error) {
+    console.error("POST ADMIN ACCEPT SENTENCES ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
+
+exports.getListDraftSentences = async (req, res, next) => {
+  try {
+    const list = await getDraftSentences();
+    return res.status(200).json(list);
+  } catch (error) {
+    console.error("GET LIST DRAFT SENTENCES ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
+
+exports.postDeleteDraftSentences = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+
+    const isDeleted = await deleteDraftsentences(ids);
+
+    if (isDeleted) {
+      return res.status(200).json({ message: "Xóa câu thành công" });
+    }
+
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  } catch (error) {
+    console.error("POST DELETE DRAFT SENTENCES ERROR: ", error);
     return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };

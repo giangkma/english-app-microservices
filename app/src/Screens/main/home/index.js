@@ -1,30 +1,19 @@
-import { Icons, Images, Menu, Search } from 'assets';
-import { Image, Text, View } from 'react-native-ui-lib';
+import { accountApi } from 'apis';
+import { Icons, Images, Menu } from 'assets';
 import React, { useEffect } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
-import { accountApi, topicApi, wordApi } from 'apis';
-import { getFavoriteList, setFavoriteList, setUser } from 'store/auth';
+import { Image, Text, View } from 'react-native-ui-lib';
+import { useDispatch } from 'react-redux';
+import { setUser } from 'store/auth';
 import { scaleSize, showAlert } from 'utilities';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { HomeCard } from '../components';
-import { Layout } from 'screens';
-import { setTopics } from 'store/flashCards';
 import { useTranslation } from 'react-i18next';
+import { Layout } from 'screens';
+import { HomeCard } from '../components';
 
 export const HomeScreen = ({ navigation }) => {
     const { t } = useTranslation();
-    const { data, total } = useSelector(getFavoriteList);
     const dispatch = useDispatch();
-
-    const getTopics = async () => {
-        try {
-            const res = await topicApi.getTopics();
-            dispatch(setTopics(res));
-        } catch (error) {
-            showAlert(error.message);
-        }
-    };
 
     const getProfile = async () => {
         try {
@@ -41,20 +30,8 @@ export const HomeScreen = ({ navigation }) => {
         }
     };
 
-    const getFavoriteWords = async () => {
-        try {
-            if (data && total !== 0) return;
-            const { packList, total: t } = await wordApi.getUserFavoriteList();
-            dispatch(setFavoriteList({ packList, total: t }));
-        } catch (error) {
-            showAlert(error.message);
-        }
-    };
-
     useEffect(() => {
-        getTopics();
         getProfile();
-        getFavoriteWords();
     }, []);
     return (
         <Layout bg2 isScroll={true}>
@@ -93,30 +70,10 @@ export const HomeScreen = ({ navigation }) => {
                         </View>
                         <View row spread marginB-20>
                             <HomeCard
-                                title={'Vocabulary with Flashcards'}
+                                title={'Words Management'}
                                 imgSrc={Images.flashcard}
                                 iconSrc={Icons.flashcardIcon}
-                                navigateTo={'FlashCards'}
-                            />
-                            <HomeCard
-                                title={'Your favorite vocabulary'}
-                                imgSrc={Images.flashcard}
-                                iconSrc={Icons.vocabularyIcon}
-                                navigateTo={'FavoriteWords'}
-                            />
-                            {/* <HomeCard
-                                title={'1000+ communication sentences'}
-                                imgSrc={Images.flashcard}
-                                iconSrc={Icons.flashcardIcon}
-                                navigateTo={'FlashCards'}
-                            /> */}
-                        </View>
-                        <View row spread>
-                            <HomeCard
-                                title={'Play games'}
-                                imgSrc={Images.flashcard}
-                                iconSrc={Icons.playGameIcon}
-                                navigateTo={'Games'}
+                                navigateTo={'Works'}
                             />
                         </View>
                     </View>

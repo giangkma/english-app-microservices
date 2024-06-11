@@ -7,6 +7,9 @@ const {
   getFavoriteList,
   isExistWord,
   getWordPack,
+  acceptWords,
+  deleteAllContributedWords,
+  deleteDraftWords,
 } = require("../services/word.service");
 
 exports.postContributeWord = async (req, res, next) => {
@@ -33,6 +36,7 @@ exports.postContributeWord = async (req, res, next) => {
       type,
       picture: pictureUrl,
       isChecked: false,
+      isContributed: true,
       ...rest,
     });
 
@@ -42,6 +46,49 @@ exports.postContributeWord = async (req, res, next) => {
     return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   } catch (error) {
     console.error("POST CONTRIBUTE WORD ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
+
+exports.postAdminAcceptWords = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+
+    const isAcceptSuccess = await acceptWords(ids);
+    if (isAcceptSuccess) {
+      return res.status(200).json({ message: "Duyệt từ thành công" });
+    }
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  } catch (error) {
+    console.error("POST ADMIN ACCEPT WORDS ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
+
+exports.postDeleteDraftWords = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+    console.log(req);
+    const isDeleteSuccess = await deleteDraftWords(ids);
+    if (isDeleteSuccess) {
+      return res.status(200).json({ message: "Xóa từ thành công" });
+    }
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  } catch (error) {
+    console.error("POST DELETE DRAFT WORDS ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
+
+exports.postDeleteAllContributedWords = async (req, res, next) => {
+  try {
+    const isDeleteSuccess = await deleteAllContributedWords();
+    if (isDeleteSuccess) {
+      return res.status(200).json({ message: "Xóa từ thành công" });
+    }
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  } catch (error) {
+    console.error("POST DELETE ALL CONTRIBUTE WORDS ERROR: ", error);
     return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };
@@ -59,19 +106,21 @@ exports.getCheckWordExistence = async (req, res) => {
 
 exports.getWordPack = async (req, res) => {
   try {
-    const { page, perPage, packInfo, sortType } = req.query;
+    const { page, perPage, packInfo, sortType, isChecked, sortBy } = req.query;
 
     const pageInt = parseInt(page),
       perPageInt = parseInt(perPage);
     const skip = (pageInt - 1) * perPageInt;
-
     const packList = await getWordPack(
-      JSON.parse(packInfo),
+      packInfo ? JSON.parse(packInfo) : null,
       skip,
       perPageInt,
-      "-_id type word mean phonetic picture",
+      "",
       sortType === "asc" ? "1" : sortType === "desc" ? "-1" : null,
-      null
+      sortBy,
+      {
+        isChecked,
+      }
     );
 
     return res.status(200).json({ packList });

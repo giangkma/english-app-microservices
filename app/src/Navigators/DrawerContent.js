@@ -35,10 +35,6 @@ export const DrawerContent = props => {
                                 key: 'Home',
                             },
                             {
-                                text: '️🏆 Ranks',
-                                key: 'Rank',
-                            },
-                            {
                                 text: '👱 Profile',
                                 key: 'UserInfo',
                             },

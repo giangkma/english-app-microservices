@@ -14,10 +14,49 @@ exports.createNewWord = async (wordInfo) => {
   }
 };
 
+exports.acceptWords = async (ids = []) => {
+  try {
+    let query = {};
+    if (!Array.isArray(ids) || ids.length === 0) {
+      query = { isChecked: false };
+    } else {
+      query = { _id: { $in: ids } };
+    }
+    await WordModel.updateMany(query, {
+      isChecked: true,
+      isContributed: true,
+      updatedAt: Date.now(),
+    });
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.deleteDraftWords = async (ids = []) => {
+  try {
+    if (Array.isArray(ids) && ids.length !== 0) {
+      await WordModel.deleteMany({ _id: { $in: ids } });
+    }
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.deleteAllContributedWords = async () => {
+  try {
+    await WordModel.deleteMany({ isContributed: true });
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};
+
 exports.searchWord = async (word = "", limit = 20, select = "") => {
   try {
     const regex = new RegExp(`^${word}.*`, "gi");
-    const list = await WordModel.find({ word: regex })
+    const list = await WordModel.find({ word: regex, isChecked: true })
       .limit(limit)
       .select(select);
     return list;
@@ -28,7 +67,7 @@ exports.searchWord = async (word = "", limit = 20, select = "") => {
 
 exports.getWordDetail = async (word = "") => {
   try {
-    const res = await WordModel.findOne({ word });
+    const res = await WordModel.findOne({ word, isChecked: true });
 
     return res;
   } catch (error) {
@@ -45,9 +84,10 @@ exports.getFavoriteList = async (rawFavorites = []) => {
     let list = [];
     for (let word of rawFavorites) {
       const regex = new RegExp(`^${word}.*`, "gi");
-      const wordDetails = await WordModel.findOne({ word: regex }).select(
-        "-_id type word mean phonetic picture"
-      );
+      const wordDetails = await WordModel.findOne({
+        word: regex,
+        isChecked: true,
+      }).select("-_id type word mean phonetic picture");
       if (wordDetails) {
         list.push(wordDetails);
       }
@@ -74,7 +114,7 @@ exports.isExistWord = async (word = "", type = "") => {
 exports.isExistSentence = async (sentence = "") => {
   if (sentence === "") return false;
   const newRegex = new RegExp(sentence, "i");
-  return await SentenceModel.exists({ sentence: newRegex });
+  return await SentenceModel.exists({ sentence: newRegex, isChecked: true });
 };
 
 exports.getWordPack = async (
@@ -83,10 +123,11 @@ exports.getWordPack = async (
   limit = 500,
   select = "",
   sortType = null,
+  sortBy = "word",
   expandQuery = null
 ) => {
   try {
-    let query = convertPackInfoToQueryStr(packInfo);
+    let query = packInfo ? convertPackInfoToQueryStr(packInfo) : {};
 
     // add expand query
     if (expandQuery && typeof expandQuery === "object") {
@@ -94,7 +135,9 @@ exports.getWordPack = async (
     }
 
     const packList = await WordModel.find(query)
-      .sort({ word: sortType })
+      .sort({
+        [sortBy]: sortType,
+      })
       .skip(skip)
       .limit(limit)
       .select(select);
@@ -108,7 +151,7 @@ exports.getWordPack = async (
 exports.countWordPack = async (packInfo = {}) => {
   try {
     let query = convertPackInfoToQueryStr(packInfo);
-    return await WordModel.countDocuments(query);
+    return await WordModel.countDocuments({ ...query, isChecked: true });
   } catch (error) {
     throw error;
   }

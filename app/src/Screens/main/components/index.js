@@ -2,7 +2,7 @@ export * from './FlashCardInfo';
 export * from './HomeCard';
 export * from './FlashCardSettings';
 export * from './UserInfoTextField';
-export * from './GameCard';
+export * from './TitleRow';
 export * from './WordResultModal';
 export * from './SplitWord';
 export * from './PlayerRankCard';

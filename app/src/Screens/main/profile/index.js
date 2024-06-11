@@ -208,28 +208,6 @@ export const UserInfoScreen = () => {
                     name="username"
                     rules={{ required: 'User Name is required' }}
                 />
-                <View row centerV marginT-10>
-                    <Controller
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <Checkbox
-                                value={value}
-                                onValueChange={onChange}
-                                color="#16a085"
-                            />
-                        )}
-                        name="is2FAEnabled"
-                    />
-                    <Text
-                        style={{
-                            marginLeft: 10,
-                            color: Colors.white,
-                            fontSize: 16,
-                        }}
-                    >
-                        Turn on two-factor authentication
-                    </Text>
-                </View>
                 <View marginT-20>
                     <PrimaryButton
                         onPress={() => setChangePassword(true)}

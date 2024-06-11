@@ -12,8 +12,8 @@ export const accountApi = {
         });
     },
 
-    postLogin: ({ username, password, otpToken }) => {
-        return axios.post(`${URL}/login`, { username, password, otpToken });
+    postLogin: ({ email, password, otpToken }) => {
+        return axios.post(`${URL}/login`, { email, password, otpToken });
     },
 
     postLoginWithGoogle: access_token => {

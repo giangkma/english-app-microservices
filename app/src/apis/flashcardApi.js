@@ -1,5 +1,6 @@
 import { Config } from 'config';
 import { axios } from 'libs';
+
 const URL = '/flashcard';
 
 export const flashcardApi = {

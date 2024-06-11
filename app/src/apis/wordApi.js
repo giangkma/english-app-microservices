@@ -12,15 +12,30 @@ export const wordApi = {
     },
 
     // get word, type, phonetic, mean
-    getWordList: (page = 1, perPage = 8, packInfo, sortType = 'rand') => {
+    getWordList: ({
+        page = 1,
+        perPage = 8,
+        packInfo,
+        sortType = 'rand',
+        query,
+    }) => {
         return axios.get(`${URL}/pack`, {
             params: {
                 page,
                 perPage,
                 packInfo: JSON.stringify(packInfo),
                 sortType,
+                ...query,
             },
         });
+    },
+
+    acceptWords: ({ ids }) => {
+        return axios.post(`${URL}/admin/contribute/accept-words`, { ids });
+    },
+
+    deleteWords: ({ ids }) => {
+        return axios.post(`${URL}/admin/delete-words`, { ids });
     },
 
     getSearchWord: (word = '', isCompact = false) => {

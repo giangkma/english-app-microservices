@@ -79,7 +79,17 @@ const wordSchema = new Schema({
 
   isChecked: {
     type: Boolean,
+    required: true,
     default: false,
+  },
+  isContributed: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

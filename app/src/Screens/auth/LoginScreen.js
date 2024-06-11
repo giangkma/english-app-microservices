@@ -25,8 +25,8 @@ export const LoginScreen = ({ route }) => {
         setValue,
     } = useForm({
         defaultValues: {
-            username: __DEV__ ? 'giangdt' : '',
-            password: __DEV__ ? '123' : '',
+            email: __DEV__ ? 'giangdt.kma@gmail.com' : '',
+            password: __DEV__ ? '123456' : '',
         },
     });
 
@@ -34,7 +34,7 @@ export const LoginScreen = ({ route }) => {
         try {
             setLoading(true);
             const res = await accountApi.postLogin({
-                username: data.username,
+                email: data.email,
                 password: data.password,
                 otpToken: data.otpToken,
             });
@@ -55,7 +55,7 @@ export const LoginScreen = ({ route }) => {
 
     useEffect(() => {
         if (route.params) {
-            setValue('username', route.params.username);
+            setValue('email', route.params.email);
             setValue('password', route.params.password);
         }
     }, [route.params]);
@@ -73,10 +73,10 @@ export const LoginScreen = ({ route }) => {
                             onBlur={onBlur}
                             onChange={onChange}
                             placeholder="Username"
-                            error={errors.username && errors.username.message}
+                            error={errors.email && errors.email.message}
                         />
                     )}
-                    name="username"
+                    name="email"
                     rules={{
                         required: 'Username is required',
                         pattern: {

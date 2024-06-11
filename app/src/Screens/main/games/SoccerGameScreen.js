@@ -1,15 +1,11 @@
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
-import { Layout, LoadingScreen, PrimaryButton } from 'components';
-import React, { Component } from 'react';
+import { Layout, LoadingScreen } from 'components';
+import { Component } from 'react';
+import { Dimensions, Text, View } from 'react-native';
 
-import { Colors } from 'assets/Colors';
-import Emoji from './components/Emoji';
-import Score from './components/Score';
-import SoccerIcon from 'assets/images/soccer.png';
-import Sound from 'react-native-sound';
-import audioLost from 'assets/audios/lost.mp3';
-import { navigate } from 'navigators/utils';
 import { rankApi } from 'apis';
+import { Colors } from 'assets/Colors';
+import audioLost from 'assets/audios/lost.mp3';
+import Sound from 'react-native-sound';
 import { showAlert } from 'utilities';
 
 const LC_IDLE = 0;
@@ -188,56 +184,9 @@ class SoccerGameScreen extends Component {
                         )}
                 </View>
                 {this.state.loading && <LoadingScreen />}
-                <Score score={this.state.score} y={SCORE_Y} />
-                <Emoji
-                    score={this.state.score}
-                    y={EMOJI_Y}
-                    lost={this.state.lost}
-                />
-                {this.state.lost ? (
-                    <View style={[styles.ball, position]}>
-                        <PrimaryButton
-                            onPress={() =>
-                                this.setState({
-                                    ...this.state,
-                                    lost: false,
-                                })
-                            }
-                            small
-                            text="Continue"
-                        />
-                        <PrimaryButton
-                            onPress={() => {
-                                this.setState({
-                                    ...this.state,
-                                    lost: false,
-                                });
-                                navigate('Games');
-                            }}
-                            style={{ marginTop: 10 }}
-                            small
-                            text="Quit"
-                        />
-                    </View>
-                ) : (
-                    <Image
-                        source={SoccerIcon}
-                        style={[styles.ball, position, rotation]}
-                        onStartShouldSetResponder={event =>
-                            this.onTap(event.nativeEvent)
-                        }
-                    />
-                )}
             </Layout>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    ball: {
-        width: BALL_WIDTH,
-        height: BALL_HEIGHT,
-    },
-});
 
 export default SoccerGameScreen;

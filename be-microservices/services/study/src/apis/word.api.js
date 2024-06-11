@@ -6,6 +6,18 @@ const wordController = require("../controllers/word.controller");
 
 wordApi.post("/contribute/add-word", wordController.postContributeWord);
 
+wordApi.post(
+  "/admin/contribute/accept-words",
+  wordController.postAdminAcceptWords
+);
+
+wordApi.post("/admin/delete-words", wordController.postDeleteDraftWords);
+
+wordApi.post(
+  "/admin/contribute/delete-words",
+  wordController.postDeleteAllContributedWords
+);
+
 wordApi.get("/exist", wordController.getCheckWordExistence);
 
 wordApi.get("/pack", wordController.getWordPack);

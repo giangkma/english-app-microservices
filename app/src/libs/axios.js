@@ -1,6 +1,6 @@
 import Axios from 'axios';
-import queryString from 'query-string';
 import { Config } from 'config';
+import queryString from 'query-string';
 import { tokenStorage } from 'utilities';
 
 export const axios = Axios.create({

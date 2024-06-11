@@ -60,8 +60,8 @@ export const StackLayout = ({
                         <View height="100%">{children}</View>
                     </ScrollView>
                 ) : (
-                    <View>
-                        <View height="100%">{children}</View>
+                    <View width="100%" height="100%">
+                        {children}
                     </View>
                 )}
             </View>
