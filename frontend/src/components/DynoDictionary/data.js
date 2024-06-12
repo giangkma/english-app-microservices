@@ -21,7 +21,9 @@ function DynoDictionaryData({ isTOEIC }) {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
   const [more, setMore] = useState(true); // toggle infinite scrolling
+  const [totalWords, setTotalWords] = useState(0);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
+
   const totalPage = useRef(0);
   const preSearchList = useRef([]);
 
@@ -86,6 +88,7 @@ function DynoDictionaryData({ isTOEIC }) {
         const apiRes = await flashcardApi.getWordPackTotal(packInfo);
         if (apiRes.status === 200 && isSub) {
           const { total = 0 } = apiRes.data;
+          setTotalWords(total);
           totalPage.current = Math.ceil(total / perPage);
         }
       } catch (error) {}
@@ -137,6 +140,7 @@ function DynoDictionaryData({ isTOEIC }) {
         onSettingWordPack={settingWordPack}
         onSortTypeChange={onSortTypeChange}
         onSearchWord={onSearchWord}
+        totalWords={totalWords}
       />
       <WordDetailModal />
     </>

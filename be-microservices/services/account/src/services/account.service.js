@@ -21,16 +21,11 @@ exports.findAccount = async (email) => {
   }
 };
 
-exports.createAccount = async (
-  email,
-  password,
-  authType = ACCOUNT_TYPES.LOCAL
-) => {
+exports.createAccount = async (email, password) => {
   try {
     const newAccount = await AccountModel.create({
       email,
       password,
-      authType,
       createdDate: new Date(),
     });
     if (newAccount && newAccount._id) return newAccount._id;
@@ -248,10 +243,13 @@ exports.removeVerifyCode = async (email = "") => {
 
 exports.getUserInfoByAccountId = async (accountId = "") => {
   try {
-    const user = await UserModel.findOne({ accountId }).select(
-      "-_id username name avt favoriteList coin"
-    );
-    if (user) return user._doc;
+    const user = await UserModel.findOne({ accountId });
+    const account = await AccountModel.findById(accountId).select("role email");
+    if (user && account)
+      return {
+        ...user._doc,
+        ...account._doc,
+      };
     return null;
   } catch (error) {
     throw error;

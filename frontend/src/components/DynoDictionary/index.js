@@ -19,6 +19,7 @@ function DynoDictionary({
   onSortTypeChange,
   onSearchWord,
   isTOEIC,
+  totalWords,
 }) {
   const classes = useStyle();
 
@@ -40,6 +41,19 @@ function DynoDictionary({
           )}
         </div>
       </div>
+      <p
+        style={{
+          color: '#666',
+          fontSize: '16px',
+          textAlign: 'left',
+          marginBottom: '10px',
+        }}>
+        Tổng số từ đang có: <b>{totalWords}</b>
+        <br />
+        <br />
+        <b>Chú ý:</b> Từ điển này chỉ mang tính chất tham khảo, không chính xác
+        100%
+      </p>
       <div className="dyno-break"></div>
 
       {/* list content */}
@@ -99,6 +113,7 @@ DynoDictionary.propTypes = {
   onSearchWord: PropTypes.func,
   onSettingWordPack: PropTypes.func,
   onSortTypeChange: PropTypes.func,
+  totalWords: PropTypes.number,
 };
 
 DynoDictionary.defaultProps = {
@@ -111,6 +126,7 @@ DynoDictionary.defaultProps = {
   onSearchWord: function () {},
   onSettingWordPack: function () {},
   onSortTypeChange: function () {},
+  totalWords: 0,
 };
 
 export default DynoDictionary;

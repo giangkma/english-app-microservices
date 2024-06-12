@@ -21,7 +21,7 @@ function Navigation() {
   const theme = useTheme();
   const isXsDevice = useMediaQuery(theme.breakpoints.up('xs'));
 
-  const { avt, isAuth } = useSelector((state) => state.userInfo);
+  const { avt, isAuth, isContributor } = useSelector((state) => state.userInfo);
   const avtSrc = Boolean(avt)
     ? cloudinaryImgOptimize(avt, 48, 48)
     : defaultUserImg;
@@ -41,7 +41,7 @@ function Navigation() {
               <p
                 className={`${classes.textHome}`}
                 style={{ fontSize: '25px', fontWeight: 'bold' }}>
-                Amonino
+                Amonino {`${isContributor ? 'For Contributor' : ''}`}
               </p>
             </Link>
           )}

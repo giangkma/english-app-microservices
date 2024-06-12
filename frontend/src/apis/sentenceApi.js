@@ -18,6 +18,10 @@ const sentenceApi = {
     });
   },
 
+  getMyContributed: () => {
+    return axiosClient.get(`${URL}/my-contributed`);
+  },
+
   getSentenceList: (page = 1, perPage = 20, topics = []) => {
     return axiosClient.get(`${URL}/list`, {
       params: {

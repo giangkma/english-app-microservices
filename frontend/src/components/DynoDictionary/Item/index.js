@@ -13,6 +13,7 @@ function DynoDictionaryItem({
   picture,
   mean,
   onShowDetail,
+  onEdit,
 }) {
   const classes = useStyle();
   const imgSrc = cloudinaryImgOptimize(
@@ -46,6 +47,7 @@ function DynoDictionaryItem({
           <Speaker text={word} />
         </div>
         <WordFavorite word={word} />
+        <h1 onClick={() => onEdit(word)}>Edit</h1>
       </div>
     </div>
   );

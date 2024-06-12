@@ -18,6 +18,10 @@ const wordApi = {
     });
   },
 
+  getMyContributed: () => {
+    return axiosClient.get(`${URL}/my-contributed`);
+  },
+
   getSearchWord: (word = '', isCompact = false) => {
     return axiosClient.get(`${URL}/search-word`, {
       params: { word, isCompact },

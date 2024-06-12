@@ -10,6 +10,10 @@ highscoreApi.put(
   highscoreController.putUpdateHighScore
 );
 
-highscoreApi.get("/leaderboard", highscoreController.getLeaderboard);
+highscoreApi.get(
+  "/leaderboard",
+  jwtAuthentication,
+  highscoreController.getLeaderboard
+);
 
 module.exports = highscoreApi;

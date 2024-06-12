@@ -25,7 +25,7 @@ function get() {
 }
 
 function clear() {
-  set(JWT_TOKEN, '');
+  set('');
 }
 
 export const tokenStorage = { set, get, clear };

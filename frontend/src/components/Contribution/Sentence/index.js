@@ -6,7 +6,7 @@ import ResetIcon from '@material-ui/icons/RotateLeft';
 import SaveIcon from '@material-ui/icons/Save';
 import InputCustom from 'components/UI/InputCustom';
 import TopicSelect from 'components/UI/TopicSelect';
-import { MAX } from 'constant';
+import { CONTRIBUTED_STATUS, MAX } from 'constant';
 import { SENTENCE_TOPICS } from 'constant/sentence-topics';
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
@@ -14,6 +14,8 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import InformationTooltip from '../Word/InformationTooltip';
 import useStyle from '../Word/style';
+import CommunicationPhraseItem from 'components/CommunicationPhrase/Item';
+import { ContributionStatus } from '../Status';
 
 const schema = yup.object().shape({
   sentence: yup
@@ -37,7 +39,7 @@ const schema = yup.object().shape({
 });
 const ButtonWrapper = (props) => <Grid {...props} item xs={12} />;
 
-function SentenceContribution({ submitting, onSubmitForm }) {
+function SentenceContribution({ submitting, onSubmitForm, contributedList }) {
   const classes = useStyle();
   const topics = useRef([]);
   const [resetFlag, setResetFlag] = useState(0);
@@ -144,9 +146,7 @@ function SentenceContribution({ submitting, onSubmitForm }) {
             resetFlag={resetFlag}
           />
         </Grid>
-
         <div className="dyno-break"></div>
-
         {/* button group */}
         <div className="d-flex flex-end jus-content-end pt-5 w-100">
           <Button
@@ -169,6 +169,35 @@ function SentenceContribution({ submitting, onSubmitForm }) {
             Thêm câu
           </Button>
         </div>
+        <h1
+          style={{
+            borderBottom: 'solid 1px var(--border-color)',
+            paddingBottom: 10,
+          }}>
+          Lịch sử đóng góp của bạn: {contributedList?.length}
+        </h1>
+        {contributedList?.map((item, index) => {
+          return (
+            <div
+              key={index}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 20,
+              }}>
+              <h2>{index + 1}</h2>
+              <div style={{ flex: 1 }}>
+                <CommunicationPhraseItem
+                  mean={item.mean}
+                  sentence={item.sentence}
+                />
+              </div>
+              <div>
+                <ContributionStatus status={item.status} />
+              </div>
+            </div>
+          );
+        })}
       </form>
     </div>
   );
@@ -177,6 +206,7 @@ function SentenceContribution({ submitting, onSubmitForm }) {
 SentenceContribution.propTypes = {
   onSubmitForm: PropTypes.func,
   submitting: PropTypes.bool,
+  contributedList: PropTypes.array,
 };
 
 export default SentenceContribution;

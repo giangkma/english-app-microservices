@@ -1,4 +1,6 @@
 const { uploadImage } = require("../../../../libs/cloudinary.lib");
+const { CONTRIBUTED_STATUS } = require("../contants");
+const { checkUserIsContributor } = require("../helper/word-pack.helper");
 
 const {
   createNewWord,
@@ -10,11 +12,14 @@ const {
   acceptWords,
   deleteAllContributedWords,
   deleteDraftWords,
+  getMyContributedWords,
 } = require("../services/word.service");
 
 exports.postContributeWord = async (req, res, next) => {
   try {
     const { picture, word, type, ...rest } = req.body;
+    const { user } = req;
+    const isContributor = user && checkUserIsContributor(user.role);
 
     // check existence of word
     const isExist = await isExistWord(word, type);
@@ -35,17 +40,38 @@ exports.postContributeWord = async (req, res, next) => {
       word,
       type,
       picture: pictureUrl,
-      isChecked: false,
+      status: isContributor
+        ? CONTRIBUTED_STATUS.ACCEPTED
+        : CONTRIBUTED_STATUS.PENDING,
       isContributed: true,
+      contributedBy: user ? user._id : null,
       ...rest,
     });
 
     if (isCreateSuccess) {
-      return res.status(200).json({ message: "Tạo từ mới thành công" });
+      const message = isContributor
+        ? "Tạo từ mới thành công"
+        : "Từ của bạn đã được gửi, chúng tôi sẽ kiểm tra và duyệt sớm nhất";
+      return res.status(200).json({
+        message,
+      });
     }
     return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   } catch (error) {
     console.error("POST CONTRIBUTE WORD ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
+
+// get my history contributed words
+exports.getMyContributedWords = async (req, res, next) => {
+  try {
+    const { user } = req;
+    const words = await getMyContributedWords(user._id);
+
+    return res.status(200).json(words);
+  } catch (error) {
+    console.error("ERROR: ", error);
     return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };
@@ -106,7 +132,7 @@ exports.getCheckWordExistence = async (req, res) => {
 
 exports.getWordPack = async (req, res) => {
   try {
-    const { page, perPage, packInfo, sortType, isChecked, sortBy } = req.query;
+    const { page, perPage, packInfo, sortType, sortBy } = req.query;
 
     const pageInt = parseInt(page),
       perPageInt = parseInt(perPage);
@@ -119,7 +145,7 @@ exports.getWordPack = async (req, res) => {
       sortType === "asc" ? "1" : sortType === "desc" ? "-1" : null,
       sortBy,
       {
-        isChecked,
+        status: CONTRIBUTED_STATUS.ACCEPTED,
       }
     );
 

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import accountApi from 'apis/accountApi';
+import { USER_ROLES } from 'constant';
 
 export const getUserInfo = createAsyncThunk(
   'userInfo/getUserInfo',
@@ -16,6 +17,9 @@ export const getUserInfo = createAsyncThunk(
   },
 );
 
+const checkIsContributor = (role) =>
+  [USER_ROLES.ADMIN, USER_ROLES.CONTRIBUTOR].includes(role);
+
 const userInfoSlice = createSlice({
   name: 'userInfo',
   initialState: {
@@ -25,6 +29,8 @@ const userInfoSlice = createSlice({
     avt: '',
     favoriteList: [],
     coin: 0,
+    role: '',
+    isContributor: false,
   },
   reducers: {
     setAddFavorites(state, action) {
@@ -47,12 +53,21 @@ const userInfoSlice = createSlice({
   },
   extraReducers: {
     [getUserInfo.fulfilled]: (state, action) => {
-      const { username, name, avt, coin, favoriteList } = action.payload;
+      const { username, name, avt, coin, favoriteList, role } = action.payload;
       if (!username || username === '') {
         state.isAuth = false;
         return;
       }
-      return { isAuth: true, username, name, avt, coin, favoriteList };
+      return {
+        isAuth: true,
+        username,
+        name,
+        avt,
+        coin,
+        favoriteList,
+        role,
+        isContributor: checkIsContributor(role),
+      };
     },
   },
 });

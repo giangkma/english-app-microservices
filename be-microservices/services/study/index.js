@@ -11,6 +11,7 @@ const gameApi = require("./src/apis/game.api");
 const flashcardApi = require("./src/apis/flashcard.api");
 const sentenceApi = require("./src/apis/sentence.api");
 const blogApi = require("./src/apis/blog.api");
+const feedbackApi = require("./src/apis/feedback.api");
 
 // ================== set port ==================
 const app = express();
@@ -35,7 +36,7 @@ mongoose.connect(MONGO_URL, {
 
 // ================== config ==================
 app.use(express.json({ limit: MAX.SIZE_JSON_REQUEST }));
-app.use(express.urlencoded({ limit: MAX.SIZE_JSON_REQUEST }));
+app.use(express.urlencoded({ limit: MAX.SIZE_JSON_REQUEST, extended: true }));
 app.use(cors(corsConfig));
 
 // ================== Apis ==================
@@ -44,6 +45,7 @@ app.use(`/games`, gameApi);
 app.use(`/flashcard`, flashcardApi);
 app.use(`/sentence`, sentenceApi);
 app.use(`/blog`, blogApi);
+app.use(`/feedback`, feedbackApi);
 
 // ================== Listening ... ==================
 app.listen(PORT, () => {

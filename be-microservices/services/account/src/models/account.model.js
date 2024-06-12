@@ -1,12 +1,20 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
-const { MAX, ACCOUNT_TYPES } = require("../../../../constant");
+const { MAX, ACCOUNT_TYPES, ACCOUNT_ROLES } = require("../../../../constant");
 
 const accountTypeEnum = (function () {
   let list = [];
   for (let k in ACCOUNT_TYPES) {
     list.push(ACCOUNT_TYPES[k]);
+  }
+  return list;
+})();
+
+const accountRoleEnum = (function () {
+  let list = [];
+  for (let k in ACCOUNT_ROLES) {
+    list.push(ACCOUNT_ROLES[k]);
   }
   return list;
 })();
@@ -29,6 +37,11 @@ const accountSchema = new Schema({
     type: String,
     enum: accountTypeEnum,
     default: ACCOUNT_TYPES.LOCAL,
+  },
+  role: {
+    type: String,
+    enum: accountRoleEnum,
+    default: ACCOUNT_ROLES.USER,
   },
   createdDate: {
     type: Date,

@@ -1,9 +1,10 @@
-const { addTopicsQuery } = require('../helper/word-pack.helper');
-const SentenceModel = require('../models/sentence.model');
+const { CONTRIBUTED_STATUS } = require("../contants");
+const { addTopicsQuery } = require("../helper/word-pack.helper");
+const SentenceModel = require("../models/sentence.model");
 
-exports.createSentence = async (sentence, mean, note, topics) => {
+exports.createSentence = async (info) => {
   try {
-    const result = SentenceModel.create({ sentence, mean, note, topics });
+    const result = SentenceModel.create({ ...info });
     if (result) return true;
     return false;
   } catch (error) {
@@ -14,11 +15,14 @@ exports.createSentence = async (sentence, mean, note, topics) => {
 exports.acceptSentences = async (ids = []) => {
   try {
     if (!Array.isArray(ids) || ids.length === 0) {
-      await SentenceModel.updateMany({}, { isChecked: true });
+      await SentenceModel.updateMany(
+        {},
+        { status: CONTRIBUTED_STATUS.ACCEPTED }
+      );
     } else {
       await SentenceModel.updateMany(
         { _id: { $in: ids } },
-        { isChecked: true }
+        { status: CONTRIBUTED_STATUS.ACCEPTED }
       );
     }
 
@@ -30,7 +34,7 @@ exports.acceptSentences = async (ids = []) => {
 
 exports.getDraftSentences = async () => {
   try {
-    return await SentenceModel.find({ isChecked: false });
+    return await SentenceModel.find({ status: CONTRIBUTED_STATUS.PENDING });
   } catch (error) {
     throw error;
   }
@@ -39,9 +43,17 @@ exports.getDraftSentences = async () => {
 exports.deleteDraftsentences = async (ids = []) => {
   try {
     if (!Array.isArray(ids) || ids.length === 0) {
-      await SentenceModel.deleteMany({ isChecked: false });
+      await SentenceModel.updateMany(
+        { status: CONTRIBUTED_STATUS.PENDING },
+        {
+          status: CONTRIBUTED_STATUS.REJECTED,
+        }
+      );
     }
-    await SentenceModel.deleteMany({ _id: { $in: ids }, isChecked: false });
+    await SentenceModel.updateMany({
+      _id: { $in: ids },
+      status: CONTRIBUTED_STATUS.REJECTED,
+    });
     return true;
   } catch (error) {
     throw error;
@@ -50,7 +62,7 @@ exports.deleteDraftsentences = async (ids = []) => {
 
 exports.getTotalSentences = async (topics = []) => {
   try {
-    let query = { isChecked: true };
+    let query = { status: CONTRIBUTED_STATUS.ACCEPTED };
 
     // query multiple topic
     addTopicsQuery(topics, query);
@@ -68,16 +80,26 @@ exports.getSentenceList = async (page = 1, perPage = 20, topics = []) => {
       perPageInt = parseInt(perPage);
     const skip = (pageInt - 1) * perPageInt;
 
-    let query = { isChecked: true };
+    let query = { status: CONTRIBUTED_STATUS.ACCEPTED };
     // query multiple topic
     addTopicsQuery(topics, query);
 
     const list = await SentenceModel.find(query)
       .skip(skip)
       .limit(perPageInt)
-      .select("-_id -isChecked -topics");
+      .select("-_id -status -topics");
 
     return list;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.getMyContributedSentences = async (userId) => {
+  try {
+    return await SentenceModel.find({ contributedBy: userId }).sort({
+      updatedAt: -1,
+    });
   } catch (error) {
     throw error;
   }

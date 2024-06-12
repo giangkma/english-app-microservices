@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "gateway.js",
   "scripts": {
-    "setup": "cd ./services/account && npm install && cd ../highscore && npm install && cd ../study && npm install",
+    "setup": "npm install && cd ./services/account && npm install && cd ../highscore && npm install && cd ../study && npm install",
     "dev": "pm2 start ecosystem.config.js && npm run log",
     "stop": "pm2 stop all",
     "log": "pm2 logs",

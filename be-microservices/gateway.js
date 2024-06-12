@@ -12,7 +12,7 @@ const { MAX } = require("./constant");
 
 // ================== config ==================
 app.use(cors(corsConfig));
-app.use(express.json({ limit: MAX.SIZE_JSON_REQUEST, extended: true }));
+app.use(express.json({ limit: MAX.SIZE_JSON_REQUEST }));
 app.use(express.urlencoded({ limit: MAX.SIZE_JSON_REQUEST, extended: true }));
 
 app.use("/account", proxy("http://localhost:" + process.env.ACCOUNT_PORT));

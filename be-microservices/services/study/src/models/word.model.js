@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { NUM_OF_SPECIALTY, NUM_OF_TOPICS } = require("../../../../constant");
+const { contributedStatusEnum, CONTRIBUTED_STATUS } = require("../contants");
 const Schema = mongoose.Schema;
 
 const wordSchema = new Schema({
@@ -77,16 +78,23 @@ const wordSchema = new Schema({
     maxLength: 150,
   },
 
-  isChecked: {
-    type: Boolean,
-    required: true,
-    default: false,
+  status: {
+    type: String,
+    enum: contributedStatusEnum,
+    default: CONTRIBUTED_STATUS.PENDING,
   },
+
   isContributed: {
     type: Boolean,
     required: true,
     default: false,
   },
+
+  contributedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+
   updatedAt: {
     type: Date,
     default: Date.now,

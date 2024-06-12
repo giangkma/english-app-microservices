@@ -32,7 +32,7 @@ mongoose.connect(MONGO_URL, {
 
 // ================== config ==================
 app.use(express.json({ limit: MAX.SIZE_JSON_REQUEST }));
-app.use(express.urlencoded({ limit: MAX.SIZE_JSON_REQUEST }));
+app.use(express.urlencoded({ limit: MAX.SIZE_JSON_REQUEST, extended: true }));
 app.use(cookieParser());
 app.use(cors(corsConfig));
 

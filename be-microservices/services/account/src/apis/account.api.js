@@ -9,7 +9,11 @@ accountApi.post("/login", accountController.postLogin);
 
 accountApi.post("/reset-password", accountController.postResetPassword);
 
-accountApi.put("/toggle-favorite", accountController.putToggleFavorite);
+accountApi.put(
+  "/toggle-favorite",
+  jwtAuthentication,
+  accountController.putToggleFavorite
+);
 accountApi.put(
   "/update-coin",
   jwtAuthentication,

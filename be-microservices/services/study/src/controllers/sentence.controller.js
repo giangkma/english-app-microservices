@@ -6,11 +6,17 @@ const {
   acceptSentences,
   getDraftSentences,
   deleteDraftsentences,
+  getMyContributedSentences,
 } = require("../services/sentence.service");
+const { checkUserIsContributor } = require("../helper/word-pack.helper");
+const { CONTRIBUTED_STATUS } = require("../contants");
 
 exports.postContributeSentence = async (req, res, next) => {
   try {
-    const { sentence, mean, note, topics } = req.body;
+    const { sentence, mean, note, topics, ...rest } = req.body;
+    const { user } = req;
+
+    const isContributor = user && checkUserIsContributor(user.role);
 
     const isExist = await isExistSentence(sentence);
 
@@ -20,10 +26,26 @@ exports.postContributeSentence = async (req, res, next) => {
         .json({ message: "Câu đã tồn tại. Vui lòng thêm câu khác. Cảm ơn" });
     }
 
-    const isCreated = await createSentence(sentence, mean, note, topics);
+    const isCreated = await createSentence({
+      sentence,
+      mean,
+      note,
+      topics,
+      status: isContributor
+        ? CONTRIBUTED_STATUS.ACCEPTED
+        : CONTRIBUTED_STATUS.PENDING,
+      isContributed: true,
+      contributedBy: user ? user._id : null,
+      ...rest,
+    });
 
     if (isCreated) {
-      return res.status(200).json({ message: "success" });
+      const message = isContributor
+        ? "Tạo câu mới thành công"
+        : "Câu của bạn đã được gửi, chúng tôi sẽ kiểm tra và duyệt sớm nhất";
+      return res.status(200).json({
+        message,
+      });
     }
 
     return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
@@ -33,6 +55,18 @@ exports.postContributeSentence = async (req, res, next) => {
   }
 };
 
+// get my history contributed sentences
+exports.getMyContributedSentences = async (req, res, next) => {
+  try {
+    const { user } = req;
+    const sentences = await getMyContributedSentences(user._id);
+
+    return res.status(200).json(sentences);
+  } catch (error) {
+    console.error("ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
 
 exports.postAdminAcceptSentences = async (req, res, next) => {
   try {

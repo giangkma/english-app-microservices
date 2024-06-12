@@ -33,11 +33,7 @@ exports.postRegisterAccount = async (req, res) => {
     }
 
     // create an account
-    const newAccountId = await createAccount(
-      email,
-      password,
-      ACCOUNT_TYPES.LOCAL
-    );
+    const newAccountId = await createAccount(email, password);
     if (!newAccountId) {
       return res
         .status(409)

@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const { contributedStatusEnum, CONTRIBUTED_STATUS } = require("../contants");
 
 const sentenceSchema = new Schema({
   sentence: {
@@ -24,13 +25,29 @@ const sentenceSchema = new Schema({
 
   topics: [String],
 
-  isChecked: {
+  status: {
+    type: String,
+    enum: contributedStatusEnum,
+    default: CONTRIBUTED_STATUS.PENDING,
+  },
+
+  isContributed: {
     type: Boolean,
     required: true,
     default: false,
   },
+
+  contributedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-const SentenceModel = mongoose.model('sentence', sentenceSchema, 'sentences');
+const SentenceModel = mongoose.model("sentence", sentenceSchema, "sentences");
 
 module.exports = SentenceModel;

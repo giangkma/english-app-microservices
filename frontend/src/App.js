@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@material-ui/core/styles';
+import Feedback from 'components/Feedback';
 import Navigation from 'components/Navigation';
 import SpeedDials from 'components/SpeedDial';
 import GlobalLoading from 'components/UI/GlobalLoading';
@@ -59,6 +60,7 @@ function App() {
               <div id="_overlay"></div>
               <Message />
               <SpeedDials />
+              <Feedback />
             </div>
           </Router>
         </ThemeProvider>

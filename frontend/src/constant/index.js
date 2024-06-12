@@ -193,3 +193,15 @@ export const WORD_SPECIALTY = [
   { value: '17', label: 'Xây dựng (Construction Industry)' },
   { value: '15', label: 'Xã hội học (Sociology)' },
 ];
+
+export const USER_ROLES = {
+  ADMIN: 'admin',
+  CONTRIBUTOR: 'contributor',
+  USER: 'user',
+};
+
+export const CONTRIBUTED_STATUS = {
+  PENDING: 'pending',
+  ACCEPTED: 'accepted',
+  REJECTED: 'rejected',
+};

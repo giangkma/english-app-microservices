@@ -20,6 +20,8 @@ import * as yup from 'yup';
 import InformationTooltip from './InformationTooltip';
 import PhoneticInput from './PhoneticInput';
 import useStyle from './style';
+import CommunicationPhraseItem from 'components/CommunicationPhrase/Item';
+import { ContributionStatus } from '../Status';
 
 let delayTimer = null;
 
@@ -78,7 +80,12 @@ const schema = yup.object().shape({
 const ButtonWrapper = (props) => <Grid {...props} item xs={12} md={6} lg={4} />;
 const TagsWrapper = (props) => <Grid {...props} item xs={12} />;
 
-function WordContribution({ onSubmitForm, submitting }) {
+function WordContribution({
+  onSubmitForm,
+  contributedList,
+  submitting,
+  wordEdit,
+}) {
   const classes = useStyle();
   const [resetFlag, setResetFlag] = useState(0);
   const dispatch = useDispatch();
@@ -370,6 +377,39 @@ function WordContribution({ onSubmitForm, submitting }) {
             Thêm từ
           </Button>
         </div>
+        {!wordEdit && (
+          <>
+            <h1
+              style={{
+                borderBottom: 'solid 1px var(--border-color)',
+                paddingBottom: 10,
+              }}>
+              Lịch sử đóng góp của bạn: {contributedList?.length}
+            </h1>
+            {contributedList?.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 20,
+                  }}>
+                  <h2>{index + 1}</h2>
+                  <div style={{ flex: 1 }}>
+                    <CommunicationPhraseItem
+                      mean={item.mean}
+                      sentence={item.word}
+                    />
+                  </div>
+                  <div>
+                    <ContributionStatus status={item.status} />
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        )}
       </form>
     </div>
   );
@@ -378,11 +418,13 @@ function WordContribution({ onSubmitForm, submitting }) {
 WordContribution.propTypes = {
   onSubmitForm: PropTypes.func,
   submitting: PropTypes.bool,
+  contributedList: PropTypes.array,
 };
 
 WordContribution.defaultProps = {
   onSubmitForm: function () {},
   submitting: false,
+  contributedList: [],
 };
 
 export default WordContribution;

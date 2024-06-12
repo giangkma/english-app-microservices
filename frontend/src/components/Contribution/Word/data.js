@@ -1,5 +1,5 @@
 import wordApi from 'apis/wordApi';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setMessage } from 'redux/slices/message.slice';
 import WordContribution from './index';
@@ -22,6 +22,28 @@ const analysisExample = (exampleStr = '', word = '') => {
 function WordContributionData() {
   const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
+  const [contributedList, setContributedList] = useState([]);
+
+  // get history contributed
+  useEffect(() => {
+    getMyHistory();
+  }, []);
+
+  const getMyHistory = async () => {
+    try {
+      const apiRes = await wordApi.getMyContributed();
+      if (apiRes.status === 200) {
+        setContributedList(apiRes.data ?? []);
+      }
+    } catch (error) {
+      dispatch(
+        setMessage({
+          type: 'error',
+          message: 'Lấy lịch sử đóng góp không thành công, thử lại',
+        }),
+      );
+    }
+  };
 
   const handleSubmit = async (data) => {
     try {
@@ -63,11 +85,11 @@ function WordContributionData() {
         dispatch(
           setMessage({
             type: 'success',
-            message:
-              'Thêm thành công, đang chờ xét duyệt. Cảm ơn sự đóng góp của bạn ❤',
+            message: apiRes.data.message,
             duration: 5000,
           }),
         );
+        getMyHistory();
         setSubmitting(false);
       }
     } catch (error) {
@@ -85,7 +107,11 @@ function WordContributionData() {
   };
 
   return (
-    <WordContribution onSubmitForm={handleSubmit} submitting={submitting} />
+    <WordContribution
+      contributedList={contributedList}
+      onSubmitForm={handleSubmit}
+      submitting={submitting}
+    />
   );
 }
 
