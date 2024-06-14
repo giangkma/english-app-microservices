@@ -36,7 +36,7 @@ exports.jwtAuthentication = async (req, res, next) => {
     }
 
     // verify jwt
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const decoded = jwt.verify(token, "amonino");
 
     if (decoded) {
       const { accountId } = decoded.sub;

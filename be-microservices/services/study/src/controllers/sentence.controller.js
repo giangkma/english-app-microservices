@@ -35,7 +35,7 @@ exports.postContributeSentence = async (req, res, next) => {
         ? CONTRIBUTED_STATUS.ACCEPTED
         : CONTRIBUTED_STATUS.PENDING,
       isContributed: true,
-      contributedBy: user ? user._id : null,
+      contributedBy: user ? user.email : null,
       ...rest,
     });
 
@@ -59,7 +59,7 @@ exports.postContributeSentence = async (req, res, next) => {
 exports.getMyContributedSentences = async (req, res, next) => {
   try {
     const { user } = req;
-    const sentences = await getMyContributedSentences(user._id);
+    const sentences = await getMyContributedSentences(user.email);
 
     return res.status(200).json(sentences);
   } catch (error) {

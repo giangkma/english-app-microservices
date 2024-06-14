@@ -1,6 +1,6 @@
 import wordApi from 'apis/wordApi';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setMessage } from 'redux/slices/message.slice';
 import WordContribution from './index';
 
@@ -19,18 +19,20 @@ const analysisExample = (exampleStr = '', word = '') => {
   return exampleArr;
 };
 
-function WordContributionData() {
+function WordContributionData({ wordEdit, editSuccess }) {
   const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
   const [contributedList, setContributedList] = useState([]);
+  const { isAuth } = useSelector((state) => state.userInfo);
 
   // get history contributed
   useEffect(() => {
     getMyHistory();
-  }, []);
+  }, [isAuth]);
 
   const getMyHistory = async () => {
     try {
+      if (!isAuth || !!wordEdit) return;
       const apiRes = await wordApi.getMyContributed();
       if (apiRes.status === 200) {
         setContributedList(apiRes.data ?? []);
@@ -79,7 +81,15 @@ function WordContributionData() {
         phonetic: phonetic.replaceAll('/', ''),
       };
 
-      const apiRes = await wordApi.postContributeWord(dataSend);
+      let apiRes;
+      if (wordEdit) {
+        apiRes = await wordApi.updateWord({
+          id: wordEdit._id,
+          wordInfor: dataSend,
+        });
+      } else {
+        apiRes = await wordApi.postContributeWord(dataSend);
+      }
 
       if (apiRes.status === 200) {
         dispatch(
@@ -91,11 +101,11 @@ function WordContributionData() {
         );
         getMyHistory();
         setSubmitting(false);
+        editSuccess && editSuccess();
       }
     } catch (error) {
       const message =
-        error.response?.data?.message ||
-        'Thêm từ mới không thành công, thử lại';
+        error.response?.data?.message || 'Không thành công, hãy thử lại';
       dispatch(
         setMessage({
           type: 'error',
@@ -111,6 +121,7 @@ function WordContributionData() {
       contributedList={contributedList}
       onSubmitForm={handleSubmit}
       submitting={submitting}
+      wordEdit={wordEdit}
     />
   );
 }

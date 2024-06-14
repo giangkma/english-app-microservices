@@ -10,6 +10,12 @@ wordApi.post(
   wordController.postContributeWord
 );
 
+wordApi.put(
+  "/update-word/:id",
+  jwtAuthentication,
+  wordController.putUpdateWord
+);
+
 wordApi.get(
   "/my-contributed",
   jwtAuthentication,

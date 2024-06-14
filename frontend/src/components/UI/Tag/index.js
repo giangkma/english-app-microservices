@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import useStyle from './style';
 
-function Tag({ title, iconSrc, id, onChange, resetFlag }) {
+function Tag({ title, iconSrc, id, onChange, resetFlag, activeProp = false }) {
   const classes = useStyle();
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(activeProp);
 
   const onClick = () => {
     onChange(id, !isActive);
@@ -12,10 +12,11 @@ function Tag({ title, iconSrc, id, onChange, resetFlag }) {
   };
 
   useEffect(() => {
+    if (activeProp) return setIsActive(true);
     if (!resetFlag) return;
     // reset value if parent component reset, except first render
     setIsActive(false);
-  }, [resetFlag]);
+  }, [resetFlag, activeProp]);
 
   return (
     <div
@@ -29,13 +30,6 @@ function Tag({ title, iconSrc, id, onChange, resetFlag }) {
   );
 }
 
-Tag.propTypes = {
-  id: PropTypes.string,
-  iconSrc: PropTypes.any,
-  title: PropTypes.string,
-  onChange: PropTypes.func,
-  resetFlag: PropTypes.number,
-};
 
 Tag.defaultProps = {
   id: '',

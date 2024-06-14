@@ -5,6 +5,7 @@ import { cloudinaryImgOptimize } from 'helper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import useStyle from './style';
+import { useSelector } from 'react-redux';
 
 function DynoDictionaryItem({
   word,
@@ -16,6 +17,7 @@ function DynoDictionaryItem({
   onEdit,
 }) {
   const classes = useStyle();
+  const { isContributor } = useSelector((state) => state.userInfo);
   const imgSrc = cloudinaryImgOptimize(
     picture ? picture : DEFAULTS.IMAGE_SRC,
     50,
@@ -47,7 +49,7 @@ function DynoDictionaryItem({
           <Speaker text={word} />
         </div>
         <WordFavorite word={word} />
-        <h1 onClick={() => onEdit(word)}>Edit</h1>
+        {isContributor && <h2 onClick={() => onEdit(word)}>&nbsp;Edit</h2>}
       </div>
     </div>
   );

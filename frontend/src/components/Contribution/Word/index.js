@@ -12,7 +12,7 @@ import UploadButton from 'components/UI/UploadButton';
 import { MAX, WORD_LEVELS, WORD_SPECIALTY, WORD_TYPES } from 'constant';
 import { debounce } from 'helper';
 import PropTypes from 'prop-types';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { setMessage } from 'redux/slices/message.slice';
@@ -106,6 +106,20 @@ function WordContribution({
     onSubmitForm({ ...data, topics: topics.current, picture: picture.current });
   };
 
+  useEffect(() => {
+    if (!!wordEdit) {
+      reset({
+        ...wordEdit,
+        examples: wordEdit.examples.join('\n'),
+        synonyms: wordEdit.synonyms.join('\n'),
+        antonyms: wordEdit.antonyms.join('\n'),
+      });
+      topics.current = wordEdit.topics;
+      picture.current = wordEdit.picture;
+      setResetFlag(Math.random() + 1);
+    }
+  }, [wordEdit]);
+
   const onResetForm = () => {
     const initialValues = {
       word: '',
@@ -126,13 +140,14 @@ function WordContribution({
   };
 
   const handleCheckWordExistence = (eWord, eType) => {
+    const word = eWord ? eWord.target?.value : getValues('word'),
+      type = eType ? eType.target?.value : getValues('type');
+
+    if (wordEdit && word === wordEdit.word) return;
     delayTimer = debounce(
       delayTimer,
       async () => {
         try {
-          const word = eWord ? eWord.target?.value : getValues('word'),
-            type = eType ? eType.target?.value : getValues('type');
-
           const apiRes = await wordApi.getCheckWordExistence(word, type);
           if (apiRes.status === 200) {
             const { isExist = false } = apiRes.data;
@@ -154,7 +169,9 @@ function WordContribution({
 
   return (
     <div className={classes.root}>
-      <h1 className={classes.title}>Thêm từ mới của bạn vào Website</h1>
+      <h1 className={classes.title}>
+        {wordEdit ? 'Sửa từ vựng' : 'Thêm từ mới của bạn vào Website'}
+      </h1>
       <div className="dyno-break"></div>
 
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
@@ -341,6 +358,7 @@ function WordContribution({
               className="w-100 h-100"
               resetFlag={resetFlag}
               onChange={(imgSrc) => (picture.current = imgSrc)}
+              url={picture.current}
             />
           </Grid>
 
@@ -351,6 +369,7 @@ function WordContribution({
             buttonTitle="Thêm chủ đề"
             buttonWrapper={ButtonWrapper}
             tagsWrapper={TagsWrapper}
+            wordEditTopics={topics.current}
           />
         </Grid>
 
@@ -374,10 +393,10 @@ function WordContribution({
               submitting ? <LoopIcon className="ani-spin" /> : <SaveIcon />
             }
             variant="contained">
-            Thêm từ
+            {wordEdit ? 'Lưu thay đổi' : 'Thêm từ'}
           </Button>
         </div>
-        {!wordEdit && (
+        {contributedList?.length > 0 && (
           <>
             <h1
               style={{

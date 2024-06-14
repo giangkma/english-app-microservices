@@ -89,14 +89,14 @@ export const ForgotPasswordScreen = () => {
                 <ScrollView>
                     <View paddingH-8 paddingV-24>
                         <Text white fs24 fw9 font-black>
-                            Forgot Password
+                            Bạn quên mật khẩu?
                         </Text>
                     </View>
                     {isSendCodeSuccess ? (
                         <>
                             <View paddingH-8 marginB-20>
                                 <Text white fs15 fw5 font-medium>
-                                    Reset password for account:
+                                    Tạo mật khẩu mới cho tài khoản:
                                 </Text>
                                 <Text wildWatermelonRed fs15 fw7 font-bold>
                                     {username}
@@ -122,10 +122,10 @@ export const ForgotPasswordScreen = () => {
                                 )}
                                 name="password"
                                 rules={{
-                                    required: 'New Password is required',
+                                    required: 'Bạn phải điền mật khẩu',
                                     pattern: {
                                         value: Config.STRING_REGEX,
-                                        message: 'Password is invalid',
+                                        message: 'Mật khẩu không hợp lệ',
                                     },
                                 }}
                             />
@@ -140,7 +140,7 @@ export const ForgotPasswordScreen = () => {
                                             value={value}
                                             onBlur={onBlur}
                                             onChange={onChange}
-                                            placeholder="Confirm password"
+                                            placeholder="Nhập lại mật khẩu"
                                             type="password"
                                             error={
                                                 errors.confirm_password &&
@@ -150,17 +150,16 @@ export const ForgotPasswordScreen = () => {
                                     )}
                                     name="confirm_password"
                                     rules={{
-                                        required:
-                                            'Confirm Password is required',
+                                        required: 'Bạn phải điền lại mật khẩu',
                                         pattern: {
                                             value: Config.STRING_REGEX,
-                                            message: 'Password is invalid',
+                                            message: 'Mật khẩu không hợp lệ',
                                         },
                                         validate: value => {
                                             if (
                                                 value !== getValues('password')
                                             ) {
-                                                return 'Confirm Password is not match';
+                                                return 'Mật khẩu không khớp';
                                             }
                                         },
                                     }}
@@ -186,17 +185,17 @@ export const ForgotPasswordScreen = () => {
                                     )}
                                     name="code"
                                     rules={{
-                                        required: 'Code is required',
+                                        required: 'Bạn phải điền mã Code',
                                         pattern: {
                                             value: Config.NUMBER_REGEX,
-                                            message: 'Code is invalid',
+                                            message: 'Mã Code không hợp lệ',
                                         },
                                     }}
                                 />
                             </View>
                             <View row right marginT-15 marginB-26>
                                 <Text white fs15 fw3 font-light>
-                                    I did not receive the code !
+                                    Tôi không nhận được mã Code?
                                 </Text>
                                 <TouchableOpacity onPress={onSendCode}>
                                     <Text
@@ -206,7 +205,7 @@ export const ForgotPasswordScreen = () => {
                                         font-bold
                                         marginL-10
                                     >
-                                        Resend
+                                        Gửi lại
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -215,7 +214,7 @@ export const ForgotPasswordScreen = () => {
                         <StyledTextInput
                             icon={<Person />}
                             value={username}
-                            placeholder="Username"
+                            placeholder="Email"
                             onChange={setUsername}
                         />
                     )}
@@ -224,14 +223,14 @@ export const ForgotPasswordScreen = () => {
                     {isSendCodeSuccess ? (
                         <PrimaryButton
                             onPress={handleSubmit(onResetPassword)}
-                            text="Reset password"
+                            text="Thay đổi mật khẩu"
                         />
                     ) : (
-                        <PrimaryButton onPress={onSendCode} text="Send code" />
+                        <PrimaryButton onPress={onSendCode} text="Gửi Code" />
                     )}
                     <View row center marginT-24>
                         <Text white fs15 fw5 font-medium>
-                            Don't have an account?
+                            Bạn chưa có tài khoản?
                         </Text>
                         <TouchableOpacity onPress={() => navigate('Signup')}>
                             <Text
@@ -241,7 +240,7 @@ export const ForgotPasswordScreen = () => {
                                 font-bold
                                 marginL-10
                             >
-                                Register
+                                Đăng Ký
                             </Text>
                         </TouchableOpacity>
                     </View>

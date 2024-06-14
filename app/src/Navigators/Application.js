@@ -15,6 +15,7 @@ import {
 } from 'screens/main';
 import { DrawerContent } from './DrawerContent';
 import { navigationRef } from './utils';
+import { FeedbackScreen } from 'screens/main/feebacks';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -49,6 +50,10 @@ export const ApplicationNavigator = () => {
                     />
                     <Drawer.Screen name="Works" component={WordsScreen} />
                     <Drawer.Screen name="UserInfo" component={UserInfoScreen} />
+                    <Drawer.Screen
+                        name="Feedbacks"
+                        component={FeedbackScreen}
+                    />
                 </Drawer.Navigator>
             ) : (
                 <Stack.Navigator

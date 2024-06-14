@@ -13,6 +13,7 @@ const {
   deleteAllContributedWords,
   deleteDraftWords,
   getMyContributedWords,
+  updateWord,
 } = require("../services/word.service");
 
 exports.postContributeWord = async (req, res, next) => {
@@ -44,7 +45,7 @@ exports.postContributeWord = async (req, res, next) => {
         ? CONTRIBUTED_STATUS.ACCEPTED
         : CONTRIBUTED_STATUS.PENDING,
       isContributed: true,
-      contributedBy: user ? user._id : null,
+      contributedBy: user ? user.email : null,
       ...rest,
     });
 
@@ -63,11 +64,53 @@ exports.postContributeWord = async (req, res, next) => {
   }
 };
 
+exports.putUpdateWord = async (req, res, next) => {
+  try {
+    const { picture, ...rest } = req.body;
+    const { user } = req;
+    const { id } = req.params;
+    const isContributor = user && checkUserIsContributor(user.role);
+
+    if (!isContributor) {
+      return res
+        .status(403)
+        .json({ message: "Bạn không có quyền thực hiện hành động này" });
+    }
+
+    // upload description picture if available
+    let pictureUrl = null;
+    if (picture && picture.includes("cloudinary")) {
+      pictureUrl = picture;
+    } else {
+      pictureUrl = await uploadImage(picture, "dynonary/words");
+    }
+
+    // create the new word
+    const updateSuccess = await updateWord({
+      id,
+      wordInfo: {
+        picture: pictureUrl,
+        ...rest,
+      },
+    });
+
+    if (updateSuccess) {
+      return res.status(200).json({
+        message: "Cập nhật từ thành công",
+      });
+    }
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  } catch (error) {
+    console.error("UPDATE WORD ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
+
 // get my history contributed words
 exports.getMyContributedWords = async (req, res, next) => {
   try {
     const { user } = req;
-    const words = await getMyContributedWords(user._id);
+    const words = await getMyContributedWords(user.email);
 
     return res.status(200).json(words);
   } catch (error) {
@@ -94,7 +137,6 @@ exports.postAdminAcceptWords = async (req, res, next) => {
 exports.postDeleteDraftWords = async (req, res, next) => {
   try {
     const { ids } = req.body;
-    console.log(req);
     const isDeleteSuccess = await deleteDraftWords(ids);
     if (isDeleteSuccess) {
       return res.status(200).json({ message: "Xóa từ thành công" });
@@ -132,7 +174,14 @@ exports.getCheckWordExistence = async (req, res) => {
 
 exports.getWordPack = async (req, res) => {
   try {
-    const { page, perPage, packInfo, sortType, sortBy } = req.query;
+    const {
+      page,
+      perPage,
+      packInfo,
+      sortType,
+      sortBy,
+      status = CONTRIBUTED_STATUS.ACCEPTED,
+    } = req.query;
 
     const pageInt = parseInt(page),
       perPageInt = parseInt(perPage);
@@ -145,7 +194,7 @@ exports.getWordPack = async (req, res) => {
       sortType === "asc" ? "1" : sortType === "desc" ? "-1" : null,
       sortBy,
       {
-        status: CONTRIBUTED_STATUS.ACCEPTED,
+        status,
       }
     );
 

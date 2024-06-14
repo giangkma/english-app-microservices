@@ -18,14 +18,21 @@ import { FlatList, ActivityIndicator } from 'react-native';
 import { Config } from 'config';
 import { DeleteWordConfirm } from './DeleteWordConfirm';
 
-const SECTIONS = [
+const WORD_STATUS = [
     {
         sceen: 'ContributeWords',
-        name: 'Contributed Words',
+        name: 'Chờ Duyệt',
+        status: 'pending',
     },
     {
         sceen: 'AllWords',
-        name: 'All Words',
+        name: 'Đã Duyệt',
+        status: 'accepted',
+    },
+    {
+        sceen: 'RejectedWords',
+        name: 'Đã Từ Chối',
+        status: 'rejected',
     },
 ];
 
@@ -33,17 +40,16 @@ export const useWords = () => {
     const [words, setWords] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingOverlay, setLoadingOverlay] = useState(false);
-    const [sectionName, setSectionName] = useState(SECTIONS[0].name);
+    const [statusObj, setStatusObj] = useState(WORD_STATUS[0]);
     const [page, setPage] = useState(1);
     const [isHasMore, setIsHasMore] = useState(true);
-
-    const isAllWordMode = sectionName === 'All Words';
+    const [wordDelete, setWordDelete] = useState(undefined);
 
     const onAcceptWords = async ids => {
         try {
             setLoadingOverlay(true);
             await wordApi.acceptWords({ ids });
-            showAlert('Accept words successfully', 'Success');
+            showAlert('', 'Thành Công');
             setWords(prev => prev.filter(i => !ids.includes(i._id)));
         } catch (error) {
             showAlert(error.message);
@@ -52,11 +58,12 @@ export const useWords = () => {
         }
     };
 
-    const onDeleteWords = async ids => {
+    const onDeleteWords = async () => {
         try {
             setLoadingOverlay(true);
+            const ids = [wordDelete._id];
             await wordApi.deleteWords({ ids });
-            showAlert('Delete words successfully', 'Success');
+            showAlert('', 'Thành Công');
             setWords(prev => prev.filter(i => !ids.includes(i._id)));
         } catch (error) {
             showAlert(error.message);
@@ -72,7 +79,7 @@ export const useWords = () => {
                 page,
                 perPage: Config.LIMIT,
                 query: {
-                    isChecked: isAllWordMode,
+                    status: statusObj.status,
                     sortBy: 'updatedAt',
                     sortType: 'desc',
                 },
@@ -94,7 +101,7 @@ export const useWords = () => {
         } else {
             setPage(1);
         }
-    }, [sectionName]);
+    }, [statusObj.status]);
 
     useEffect(() => {
         getWords(page === 1);
@@ -102,34 +109,36 @@ export const useWords = () => {
 
     return {
         words,
+        setWords,
         loading,
-        sectionName,
-        setSectionName,
+        statusObj,
+        setStatusObj,
         page,
         setPage,
-        isAllWordMode,
         onAcceptWords,
         loadingOverlay,
         isHasMore,
         onDeleteWords,
+        wordDelete,
+        setWordDelete,
     };
 };
 
 export const WordsScreen = () => {
     const {
         words,
+        setWords,
         loading,
-        isAllWordMode,
-        sectionName,
-        setSectionName,
+        statusObj,
+        setStatusObj,
         setPage,
         onAcceptWords,
         loadingOverlay,
         isHasMore,
         onDeleteWords,
+        wordDelete,
+        setWordDelete,
     } = useWords();
-
-    const [wordDelete, setWordDelete] = useState(undefined);
 
     const onGoBack = () => {
         navigate('Home');
@@ -139,14 +148,14 @@ export const WordsScreen = () => {
         <StackLayout
             scroll={false}
             navigateFnc={onGoBack}
-            textCenter={'Words Management'}
+            textCenter={'Từ Vựng'}
         >
             {loadingOverlay && <LoadingScreen />}
             <DeleteWordConfirm
                 visible={!!wordDelete}
                 onClose={() => setWordDelete(undefined)}
                 word={wordDelete}
-                onConfirm={() => onDeleteWords([wordDelete._id])}
+                onConfirm={onDeleteWords}
             />
             <View
                 style={{
@@ -163,14 +172,17 @@ export const WordsScreen = () => {
                         flexDirection: 'row',
                     }}
                 >
-                    {SECTIONS.map(i => {
+                    {WORD_STATUS.map(i => {
                         return (
                             <TouchableOpacity
                                 key={i.sceen}
-                                onPress={() => setSectionName(i.name)}
+                                onPress={() => {
+                                    setWords([]);
+                                    setStatusObj(i);
+                                }}
                                 style={{
                                     backgroundColor:
-                                        sectionName === i.name
+                                        statusObj.name === i.name
                                             ? Colors.darkLinear
                                             : 'white',
                                     padding: 10,
@@ -186,7 +198,7 @@ export const WordsScreen = () => {
             {words.length === 0 && !loading && (
                 <View centerV centerH marginT-20>
                     <Text white fs16>
-                        No words
+                        Không có từ nào
                     </Text>
                 </View>
             )}
@@ -203,24 +215,22 @@ export const WordsScreen = () => {
                                 marginB-15
                                 paddingB-10
                             >
-                                {item.isContributed && (
-                                    <TouchableOpacity
-                                        onPress={() => setWordDelete(item)}
-                                        bg-error
-                                        flex
-                                        center
-                                        style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            right: 0,
-                                            width: 30,
-                                            height: 30,
-                                            zIndex: 20,
-                                        }}
-                                    >
-                                        <Text>✖️</Text>
-                                    </TouchableOpacity>
-                                )}
+                                <TouchableOpacity
+                                    onPress={() => setWordDelete(item)}
+                                    bg-error
+                                    flex
+                                    center
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        right: 0,
+                                        width: 30,
+                                        height: 30,
+                                        zIndex: 20,
+                                    }}
+                                >
+                                    <Text>✖️</Text>
+                                </TouchableOpacity>
                                 <View row centerV>
                                     <Image
                                         source={{ uri: item.picture }}
@@ -243,26 +253,34 @@ export const WordsScreen = () => {
                                             </Text>
                                         </Text>
                                         <Text fs13>
-                                            <Text fs12>Mean: </Text>
+                                            <Text fs12>Nghĩa: </Text>
                                             {item.mean}
                                         </Text>
                                         <Text fs13>
-                                            <Text fs12>Example: </Text>
+                                            <Text fs12>Ví dụ: </Text>
                                             {item.examples
                                                 .map(i => i)
                                                 .join(', ')}
                                         </Text>
                                         <Text fs13>
-                                            <Text fs12>Note: </Text>
+                                            <Text fs12>Ghi chú: </Text>
                                             {item.note}
                                         </Text>
                                         <Text fs13>
-                                            <Text fs12>Level: </Text>
+                                            <Text fs12>Cấp độ: </Text>
                                             {item.level}
                                         </Text>
+                                        {item.contributedBy && (
+                                            <Text fs13>
+                                                <Text fs12>
+                                                    Người đóng góp:{' '}
+                                                </Text>
+                                                {item.contributedBy}
+                                            </Text>
+                                        )}
                                     </View>
                                 </View>
-                                {!isAllWordMode && (
+                                {statusObj.status !== 'accepted' && (
                                     <Button
                                         onPress={() =>
                                             onAcceptWords([item._id])

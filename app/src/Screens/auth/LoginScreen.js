@@ -25,8 +25,8 @@ export const LoginScreen = ({ route }) => {
         setValue,
     } = useForm({
         defaultValues: {
-            email: __DEV__ ? 'giangdt.kma@gmail.com' : '',
-            password: __DEV__ ? '123456' : '',
+            email: 'admin@gmail.com',
+            password: 'admin@gmail.com',
         },
     });
 
@@ -37,6 +37,7 @@ export const LoginScreen = ({ route }) => {
                 email: data.email,
                 password: data.password,
                 otpToken: data.otpToken,
+                isAdmin: true,
             });
             if (res.token) {
                 tokenStorage.set(res.token);
@@ -61,7 +62,7 @@ export const LoginScreen = ({ route }) => {
     }, [route.params]);
 
     return (
-        <AuthLayout text="Log In">
+        <AuthLayout text="Đăng Nhập">
             {loading && <LoadingScreen />}
             <View>
                 <Controller
@@ -72,16 +73,16 @@ export const LoginScreen = ({ route }) => {
                             value={value}
                             onBlur={onBlur}
                             onChange={onChange}
-                            placeholder="Username"
+                            placeholder="Email"
                             error={errors.email && errors.email.message}
                         />
                     )}
                     name="email"
                     rules={{
-                        required: 'Username is required',
+                        required: 'Bạn phải điền email',
                         pattern: {
                             value: Config.EMAIL_REGEX,
-                            message: 'Username is invalid',
+                            message: 'Email không hợp lệ',
                         },
                     }}
                 />
@@ -96,20 +97,13 @@ export const LoginScreen = ({ route }) => {
                                 value={value}
                                 onBlur={onBlur}
                                 onChange={onChange}
-                                placeholder="Password"
+                                placeholder="Mật Khẩu"
                                 error={
                                     errors.password && errors.password.message
                                 }
                             />
                         )}
                         name="password"
-                        rules={{
-                            required: 'Password is required',
-                            pattern: {
-                                value: Config.STRING_REGEX,
-                                message: 'Password is invalid',
-                            },
-                        }}
                     />
                 </View>
                 {is2FAEnabled && (
@@ -146,11 +140,11 @@ export const LoginScreen = ({ route }) => {
             <View row right marginB-36>
                 <TouchableOpacity onPress={() => navigate('ForgotPassword')}>
                     <Text white fs15 fw5 font-medium>
-                        Forgot Password?
+                        Bạn quên mật khẩu?
                     </Text>
                 </TouchableOpacity>
             </View>
-            <PrimaryButton onPress={handleSubmit(onSubmit)} text="Log In" />
+            <PrimaryButton onPress={handleSubmit(onSubmit)} text="Đăng nhập" />
         </AuthLayout>
     );
 };

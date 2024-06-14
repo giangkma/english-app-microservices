@@ -20,6 +20,7 @@ function DynoDictionary({
   onSearchWord,
   isTOEIC,
   totalWords,
+  ...props
 }) {
   const classes = useStyle();
 
@@ -72,7 +73,7 @@ function DynoDictionary({
                       {/* render list */}
                       {list.map((item, index) => (
                         <li className={classes.listItem} key={index}>
-                          <DynoDictionaryItemData {...item} />
+                          <DynoDictionaryItemData {...props} {...item} />
                         </li>
                       ))}
 

@@ -41,7 +41,7 @@ export const HomeScreen = ({ navigation }) => {
                         <Menu />
                     </TouchableOpacity>
                     <Text white fs17 font-semibold>
-                        Home
+                        Trang chủ
                     </Text>
                     <View></View>
                 </View>
@@ -51,7 +51,7 @@ export const HomeScreen = ({ navigation }) => {
                             <Image
                                 style={{
                                     height: scaleSize(145),
-                                    opacity: 0.3,
+                                    opacity: 0.2,
                                     borderRadius: 20,
                                 }}
                                 source={Images.banner}
@@ -59,21 +59,28 @@ export const HomeScreen = ({ navigation }) => {
                             />
                             <View abs paddingV-10 paddingH-20>
                                 <Text white fs17 font-bold marginV-10>
-                                    I Can Help You
+                                    Ứng dụng quản trị Amonino
                                 </Text>
                                 <Text white fs15>
-                                    Here will be description of banner. Here
-                                    will be description of banner. Here will be
-                                    description of banner.{' '}
+                                    Chỉ Admin có thể đăng nhập và sử dụng ứng
+                                    dụng này, bạn có thể phê duyệt các dữ liệu
+                                    đóng góp bởi người dùng cho hệ thống, và các
+                                    chức năng quản trị khác...
                                 </Text>
                             </View>
                         </View>
                         <View row spread marginB-20>
                             <HomeCard
-                                title={'Words Management'}
+                                title={'Quản lý từ vựng'}
                                 imgSrc={Images.flashcard}
                                 iconSrc={Icons.flashcardIcon}
                                 navigateTo={'Works'}
+                            />
+                            <HomeCard
+                                title={'Ý kiến người dùng'}
+                                imgSrc={Images.flashcard}
+                                iconSrc={Icons.flashcardIcon}
+                                navigateTo={'Feedbacks'}
                             />
                         </View>
                     </View>

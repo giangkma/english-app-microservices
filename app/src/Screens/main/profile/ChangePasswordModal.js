@@ -30,7 +30,6 @@ export const ChangePasswordModal = ({ visible, onClose }) => {
     const onResetPassword = async data => {
         try {
             setLoading(true);
-            console.log(data);
         } catch (error) {
             showAlert(error.message);
         } finally {
@@ -43,13 +42,13 @@ export const ChangePasswordModal = ({ visible, onClose }) => {
             {loading && <LoadingScreen />}
             <Modal
                 visible={visible}
-                text="Reset successful"
+                text="Thay đổi mật khẩu"
                 agreeButton={{
-                    text: 'Save',
+                    text: 'Lưu',
                     onPress: handleSubmit(onResetPassword),
                 }}
                 cancelButton={{
-                    text: 'Cancel',
+                    text: 'Đóng',
                     onPress: onClose,
                 }}
                 loading={loading}
@@ -62,7 +61,7 @@ export const ChangePasswordModal = ({ visible, onClose }) => {
                             value={value}
                             onBlur={onBlur}
                             onChange={onChange}
-                            placeholder="Old password"
+                            placeholder="Mật khẩu cũ"
                             type="password"
                             error={
                                 errors.old_password &&
@@ -71,7 +70,7 @@ export const ChangePasswordModal = ({ visible, onClose }) => {
                         />
                     )}
                     name="old_password"
-                    rules={{ required: 'Old Password is required' }}
+                    rules={{ required: 'Bạn phải nhập mật khẩu cũ' }}
                 />
                 <View marginT-10>
                     <Controller
@@ -82,7 +81,7 @@ export const ChangePasswordModal = ({ visible, onClose }) => {
                                 value={value}
                                 onBlur={onBlur}
                                 onChange={onChange}
-                                placeholder="New password"
+                                placeholder="Mật khẩu mới"
                                 type="password"
                                 error={
                                     errors.new_password &&
@@ -92,7 +91,7 @@ export const ChangePasswordModal = ({ visible, onClose }) => {
                         )}
                         name="new_password"
                         rules={{
-                            required: 'New Password is required',
+                            required: 'Bạn phải nhập mật khẩu mới',
                         }}
                     />
                 </View>
@@ -105,7 +104,7 @@ export const ChangePasswordModal = ({ visible, onClose }) => {
                                 value={value}
                                 onBlur={onBlur}
                                 onChange={onChange}
-                                placeholder="Confirm password"
+                                placeholder="Nhập lại mật khẩu mới"
                                 type="password"
                                 error={
                                     errors.confirm_password &&
@@ -115,10 +114,10 @@ export const ChangePasswordModal = ({ visible, onClose }) => {
                         )}
                         name="confirm_password"
                         rules={{
-                            required: 'Confirm Password is required',
+                            required: 'Bạn phải nhập lại mật khẩu mới',
                             validate: value => {
                                 if (value !== getValues('new_password')) {
-                                    return 'Confirm Password is not match';
+                                    return 'Mật khẩu không khớp';
                                 }
                             },
                         }}

@@ -1,6 +1,6 @@
 import sentenceApi from 'apis/sentenceApi';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setMessage } from 'redux/slices/message.slice';
 import SentenceContribution from './index';
 
@@ -8,6 +8,7 @@ function SentenceContributionData() {
   const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
   const [contributedList, setContributedList] = useState([]);
+  const { isAuth } = useSelector((state) => state.userInfo);
 
   // get history contributed
   useEffect(() => {
@@ -16,6 +17,7 @@ function SentenceContributionData() {
 
   const getMyHistory = async () => {
     try {
+      if (!isAuth) return;
       const apiRes = await sentenceApi.getMyContributed();
       if (apiRes.status === 200) {
         setContributedList(apiRes.data ?? []);

@@ -91,8 +91,8 @@ const wordSchema = new Schema({
   },
 
   contributedBy: {
-    type: Schema.Types.ObjectId,
-    ref: "user",
+    type: String,
+    trim: true,
   },
 
   updatedAt: {

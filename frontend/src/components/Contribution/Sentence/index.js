@@ -169,35 +169,39 @@ function SentenceContribution({ submitting, onSubmitForm, contributedList }) {
             Thêm câu
           </Button>
         </div>
-        <h1
-          style={{
-            borderBottom: 'solid 1px var(--border-color)',
-            paddingBottom: 10,
-          }}>
-          Lịch sử đóng góp của bạn: {contributedList?.length}
-        </h1>
-        {contributedList?.map((item, index) => {
-          return (
-            <div
-              key={index}
+        {contributedList?.length > 0 && (
+          <>
+            <h1
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 20,
+                borderBottom: 'solid 1px var(--border-color)',
+                paddingBottom: 10,
               }}>
-              <h2>{index + 1}</h2>
-              <div style={{ flex: 1 }}>
-                <CommunicationPhraseItem
-                  mean={item.mean}
-                  sentence={item.sentence}
-                />
-              </div>
-              <div>
-                <ContributionStatus status={item.status} />
-              </div>
-            </div>
-          );
-        })}
+              Lịch sử đóng góp của bạn: {contributedList.length}
+            </h1>
+            {contributedList.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 20,
+                  }}>
+                  <h2>{index + 1}</h2>
+                  <div style={{ flex: 1 }}>
+                    <CommunicationPhraseItem
+                      mean={item.mean}
+                      sentence={item.sentence}
+                    />
+                  </div>
+                  <div>
+                    <ContributionStatus status={item.status} />
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        )}
       </form>
     </div>
   );

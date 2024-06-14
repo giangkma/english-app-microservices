@@ -95,9 +95,9 @@ exports.getSentenceList = async (page = 1, perPage = 20, topics = []) => {
   }
 };
 
-exports.getMyContributedSentences = async (userId) => {
+exports.getMyContributedSentences = async (email) => {
   try {
-    return await SentenceModel.find({ contributedBy: userId }).sort({
+    return await SentenceModel.find({ contributedBy: email }).sort({
       updatedAt: -1,
     });
   } catch (error) {

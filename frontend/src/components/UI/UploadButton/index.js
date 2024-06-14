@@ -26,7 +26,7 @@ function checkFile(file) {
   return { status: true };
 }
 
-function UploadButton({ title, className, onChange, resetFlag }) {
+function UploadButton({ title, url, className, onChange, resetFlag }) {
   const classes = useStyle();
   const dispatch = useDispatch();
   const [state, setState] = useState({ status: 0, data: null });
@@ -36,6 +36,25 @@ function UploadButton({ title, className, onChange, resetFlag }) {
     // reset value if parent component reset, except first render
     setState({ status: 0, data: null });
   }, [resetFlag]);
+
+  useEffect(() => {
+    if (!url) return;
+    setState({ status: 1 }); // loading
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      onChange(url);
+      setState({
+        status: 2,
+        data: {
+          imgSrc: url,
+          fileName: url,
+          fileSize: (url.length / 1024 ** 2).toFixed(2),
+        },
+      });
+    };
+    img.onerror = loadFileError;
+  }, [url]);
 
   const loadFileError = () => {
     onChange(null);

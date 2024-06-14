@@ -7,6 +7,10 @@ const wordApi = {
     return axiosClient.post(`${URL}/contribute/add-word`, { ...wordInfor });
   },
 
+  updateWord: ({ id, wordInfor }) => {
+    return axiosClient.put(`${URL}/update-word/${id}`, { ...wordInfor });
+  },
+
   getCheckWordExistence: (word, type) => {
     return axiosClient.get(`${URL}/exist`, { params: { word, type } });
   },

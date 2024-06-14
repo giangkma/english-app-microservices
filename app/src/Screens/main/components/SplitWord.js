@@ -184,8 +184,6 @@ export const SplitWord = ({
         }
     }, [nWrong]);
 
-    console.log('word : ', word);
-
     const personIcon = useMemo(() => randomPersonIcon(), [word]);
 
     return (

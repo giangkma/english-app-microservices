@@ -1,11 +1,20 @@
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import CloseIcon from '@material-ui/icons/Close';
 import flashcardApi from 'apis/flashcardApi';
 import wordApi from 'apis/wordApi';
 import WordDetailModal from 'components/UI/WordDetailModal';
 import { TOEIC_KEY } from 'constant/topics';
 import { equalArray } from 'helper';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setMessage } from 'redux/slices/message.slice';
 import DynoDictionary from '.';
+import React from 'react';
+import WordContributionData from 'components/Contribution/Word/data';
 
 const perPage = 20;
 
@@ -97,39 +106,83 @@ function DynoDictionaryData({ isTOEIC }) {
     return () => (isSub = false);
   }, [packInfo]);
 
-  // get word pack
-  useEffect(() => {
+  const getWordPack = async () => {
     let isSub = true;
 
-    (async function () {
-      try {
-        setLoading(true);
-        const apiRes = await wordApi.getWordList(
-          page,
-          perPage,
-          packInfo,
-          sortType,
-        );
-        if (apiRes.status === 200 && isSub) {
-          const { packList = [] } = apiRes.data;
-          const newList = [...list, ...packList];
-          preSearchList.current = newList;
-          setList(newList);
-        }
-      } catch (error) {
-      } finally {
-        if (isSub) {
-          setLoading(false);
-          isFirstLoad && setIsFirstLoad(false);
-        }
+    try {
+      setLoading(true);
+      const apiRes = await wordApi.getWordList(
+        page,
+        perPage,
+        packInfo,
+        sortType,
+      );
+      if (apiRes.status === 200 && isSub) {
+        const { packList = [] } = apiRes.data;
+        const newList = [...list, ...packList];
+        preSearchList.current = newList;
+        setList(newList);
       }
-    })();
+    } catch (error) {
+    } finally {
+      if (isSub) {
+        setLoading(false);
+        isFirstLoad && setIsFirstLoad(false);
+      }
+    }
 
     return () => (isSub = false);
+  };
+
+  // get word pack
+  useEffect(() => {
+    getWordPack();
   }, [page, packInfo, sortType]);
+
+  const dispatch = useDispatch();
+  const [wordEdit, setWordEdit] = useState(undefined);
+
+  const onEdit = async (word) => {
+    try {
+      setLoading(true);
+      const apiRes = await wordApi.getWordDetails(word);
+      if (apiRes.status === 200) {
+        setWordEdit(apiRes.data);
+      }
+    } catch (error) {
+      dispatch(
+        setMessage({
+          type: 'error',
+          message: 'Không thể lấy thông tin, thử lại.',
+        }),
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
+      {wordEdit && (
+        <Dialog
+          aria-labelledby="word dialog"
+          disableBackdropClick={true}
+          maxWidth="md"
+          open={open}>
+          <div>
+            <CloseIcon
+              onClick={() => setWordEdit(undefined)}
+              className="cur-pointer"
+            />
+          </div>
+          <WordContributionData
+            editSuccess={() => {
+              setWordEdit(undefined);
+            }}
+            wordEdit={wordEdit}
+          />
+        </Dialog>
+      )}
       <DynoDictionary
         isTOEIC={isTOEIC}
         list={list}
@@ -141,15 +194,12 @@ function DynoDictionaryData({ isTOEIC }) {
         onSortTypeChange={onSortTypeChange}
         onSearchWord={onSearchWord}
         totalWords={totalWords}
+        onEdit={onEdit}
       />
       <WordDetailModal />
     </>
   );
 }
-
-DynoDictionaryData.propTypes = {
-  isTOEIC: PropTypes.bool,
-};
 
 DynoDictionaryData.defaultProps = {
   isTOEIC: false,

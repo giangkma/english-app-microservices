@@ -12,7 +12,7 @@ const eventApi = require("./src/apis/event.api");
 // ================== set port ==================
 const app = express();
 const normalizePort = (port) => parseInt(port, 10);
-const PORT = normalizePort(process.env.ACCOUNT_PORT || 3000);
+const PORT = normalizePort(8001);
 
 // ================== setup ==================
 const dev = app.get("env") !== "production";
@@ -24,11 +24,14 @@ const MONGO_URL =
   (dev ? process.env.MONGO_URL_LOCAL : process.env.MONGO_URL) +
   process.env.ACCOUNT_DB_NAME;
 
-mongoose.connect(MONGO_URL, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-  useCreateIndex: true,
-});
+mongoose.connect(
+  "mongodb+srv://giangdtkma:12345az09@giangdt.gt5fbbj.mongodb.net/english-app-account",
+  {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+  }
+);
 
 // ================== config ==================
 app.use(express.json({ limit: MAX.SIZE_JSON_REQUEST }));

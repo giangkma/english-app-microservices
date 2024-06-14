@@ -16,6 +16,28 @@ exports.createNewWord = async (wordInfo) => {
   }
 };
 
+exports.updateWord = async ({ id, wordInfo }) => {
+  try {
+    const updated = await WordModel.updateOne(
+      { _id: id },
+      {
+        $set: {
+          ...wordInfo,
+          updatedAt: Date.now(),
+        },
+      },
+      { upsert: true }
+    );
+
+    if (updated) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    throw error;
+  }
+};
+
 exports.acceptWords = async (ids = []) => {
   try {
     let query = {};
@@ -38,7 +60,26 @@ exports.acceptWords = async (ids = []) => {
 exports.deleteDraftWords = async (ids = []) => {
   try {
     if (Array.isArray(ids) && ids.length !== 0) {
-      await WordModel.deleteMany({ _id: { $in: ids } });
+      // for each await
+      for (let id of ids) {
+        const word = await WordModel.findOne({ _id: id });
+        if (
+          word._doc.isContributed &&
+          word._doc.status === CONTRIBUTED_STATUS.ACCEPTED
+        ) {
+          // only update status to rejected
+          await WordModel.updateOne(
+            { _id: id },
+            {
+              status: CONTRIBUTED_STATUS.REJECTED,
+              updatedAt: Date.now(),
+            }
+          );
+        } else {
+          // delete the word
+          await WordModel.deleteOne({ _id: id });
+        }
+      }
     }
     return true;
   } catch (error) {
@@ -171,9 +212,9 @@ exports.countWordPack = async (packInfo = {}) => {
   }
 };
 
-exports.getMyContributedWords = async (userId) => {
+exports.getMyContributedWords = async (email) => {
   try {
-    return await WordModel.find({ contributedBy: userId }).sort({
+    return await WordModel.find({ contributedBy: email }).sort({
       updatedAt: -1,
     });
   } catch (error) {

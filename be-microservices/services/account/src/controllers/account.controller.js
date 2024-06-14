@@ -17,7 +17,7 @@ const {
   checkVerifyCode,
   removeVerifyCode,
 } = require("../services/account.service");
-const { ACCOUNT_TYPES, MAX } = require("../../../../constant");
+const { ACCOUNT_TYPES, MAX, ACCOUNT_ROLES } = require("../../../../constant");
 const jwtConfig = require("../configs/jwt.config");
 const mailConfig = require("../configs/mail.config");
 
@@ -59,12 +59,16 @@ exports.postRegisterAccount = async (req, res) => {
 exports.postLogin = async (req, res) => {
   try {
     const email = req.body.email?.toLowerCase();
-    const { password } = req.body;
+    const { password, isAdmin } = req.body;
 
     // check account existence
     const account = await findAccount(email);
     if (!account) {
       return res.status(406).json({ message: "Tài khoản không tồn tại" });
+    }
+
+    if (isAdmin && account.role !== ACCOUNT_ROLES.ADMIN) {
+      return res.status(401).json({ message: "Không có quyền truy cập" });
     }
 
     // check password
@@ -74,10 +78,9 @@ exports.postLogin = async (req, res) => {
     }
 
     // set cookie with jwt
-    const token = await jwtConfig.encodedToken(
-      process.env.JWT_SECRET_KEY || "dynonary-serect",
-      { accountId: account._id }
-    );
+    const token = await jwtConfig.encodedToken("amonino", {
+      accountId: account._id,
+    });
 
     return res.status(200).json({
       message: "success",

@@ -15,6 +15,7 @@ function TopicSelect({
   topicList,
   buttonWrapper,
   tagsWrapper,
+  wordEditTopics,
 }) {
   const classes = useStyle();
   const [visible, setVisible] = useState(false);
@@ -34,10 +35,13 @@ function TopicSelect({
   };
 
   useEffect(() => {
-    if (!resetFlag) return;
-    // reset value if parent component reset, except first render
-    topics.current = [];
-  }, [resetFlag]);
+    if (!wordEditTopics) {
+      if (!resetFlag) return;
+      // reset value if parent component reset, except first render
+      topics.current = [];
+    }
+    topics.current = wordEditTopics;
+  }, [wordEditTopics, resetFlag]);
 
   return (
     <>
@@ -54,16 +58,20 @@ function TopicSelect({
       <TagsWrapper className={visible ? '' : classes.tagsWrap}>
         <Collapse in={visible}>
           <div className={classes.tags}>
-            {topicList.map((topic, index) => (
-              <Tag
-                resetFlag={resetFlag}
-                iconSrc={topic.icon}
-                title={topic.title}
-                key={index}
-                id={topic.key}
-                onChange={handleTopicChange}
-              />
-            ))}
+            {topicList.map((topic, index) => {
+              const isActive = topics.current.includes(topic.key);
+              return (
+                <Tag
+                  resetFlag={resetFlag}
+                  iconSrc={topic.icon}
+                  title={topic.title}
+                  key={index}
+                  id={topic.key}
+                  onChange={handleTopicChange}
+                  activeProp={isActive}
+                />
+              );
+            })}
           </div>
         </Collapse>
       </TagsWrapper>

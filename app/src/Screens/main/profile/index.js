@@ -111,7 +111,7 @@ export const UserInfoScreen = () => {
             optionRight={
                 <PrimaryButton
                     onPress={handleSubmit(onSaveInfo)}
-                    text="Save"
+                    text="Lưu"
                     small
                 />
             }
@@ -148,7 +148,7 @@ export const UserInfoScreen = () => {
                         fs17
                         center
                     >
-                        Change profile photo
+                        Đổi ảnh đại diện
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -157,7 +157,7 @@ export const UserInfoScreen = () => {
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <UserInfoTextField
-                            label={'Full name'}
+                            label={'Tên'}
                             value={value}
                             onChange={onChange}
                             onBlur={onBlur}
@@ -211,7 +211,7 @@ export const UserInfoScreen = () => {
                 <View marginT-20>
                     <PrimaryButton
                         onPress={() => setChangePassword(true)}
-                        text="Change Password"
+                        text="Đổi mật khẩu"
                     />
                 </View>
             </View>

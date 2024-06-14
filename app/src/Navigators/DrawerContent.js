@@ -31,11 +31,11 @@ export const DrawerContent = props => {
                         </View>
                         {[
                             {
-                                text: '🏚 Home',
+                                text: '🏚 Trang Chủ',
                                 key: 'Home',
                             },
                             {
-                                text: '👱 Profile',
+                                text: '👱 Thông Tin',
                                 key: 'UserInfo',
                             },
                         ].map(item => {

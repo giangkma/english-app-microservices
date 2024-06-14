@@ -18,11 +18,11 @@ function Contribution() {
             onClick={() => setMode(0)}>
             Thêm từ
           </li>
-          <li
+          {/* <li
             className={`${classes.tab} ${mode === 1 ? 'active' : ''}`}
             onClick={() => setMode(1)}>
             Thêm câu
-          </li>
+          </li> */}
         </ul>
 
         <div className={classes.tabContent}>
@@ -34,8 +34,8 @@ function Contribution() {
                 marginBottom: '1.5rem',
                 color: '#333',
               }}>
-              Bạn là Contributor của Amonino, nên các từ và câu của bạn sẽ không
-              cần sét duyệt từ Admin
+              Bạn là Contributor của Amonino, nên các từ của bạn sẽ không cần
+              sét duyệt từ Admin
             </h1>
           )}
 

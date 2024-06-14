@@ -6,8 +6,17 @@ import { scaleSize, screenSize } from 'utilities';
 
 export const DeleteWordConfirm = ({ visible, onClose, word, onConfirm }) => {
     if (!visible || !word) return null;
+    const { isContributed } = word;
+    const isHiddenWord = isContributed && word.status === 'accepted';
     return (
-        <Modal visible={visible} text="Confirm" iconClose onClose={onClose}>
+        <Modal
+            visible={visible}
+            text={
+                isHiddenWord ? 'Xác nhận ẩn từ đã đóng góp' : 'Xác nhận xoá từ'
+            }
+            iconClose
+            onClose={onClose}
+        >
             <View row top>
                 <View marginR-10>
                     <Image
@@ -34,7 +43,8 @@ export const DeleteWordConfirm = ({ visible, onClose, word, onConfirm }) => {
                 </View>
             </View>
             <Text fs15 white font-semibold marginT-10 center>
-                Are you sure you want to delete this word?
+                Bạn có chắc chắn muốn {isHiddenWord ? 'ẩn' : 'xoá'} từ này
+                không?
             </Text>
 
             <View row center marginT-10>
@@ -49,12 +59,12 @@ export const DeleteWordConfirm = ({ visible, onClose, word, onConfirm }) => {
                     marginR-10
                 >
                     <Text white fs16>
-                        Yes
+                        Có
                     </Text>
                 </Button>
                 <Button onPress={onClose} marginT-10 bg-error flex-1 marginR-10>
                     <Text white fs16>
-                        Cancel
+                        Không
                     </Text>
                 </Button>
             </View>

@@ -2,9 +2,9 @@ require("dotenv").config();
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET,
+  cloud_name: "math-database",
+  api_key: "496858915933528",
+  api_secret: "THEUtYJ6jx1RTh0yHPiP56Btll0",
 });
 
 module.exports = { cloudinary };

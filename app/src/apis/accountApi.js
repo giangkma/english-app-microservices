@@ -3,17 +3,12 @@ import { axios } from 'libs';
 const URL = '/account';
 
 export const accountApi = {
-    postRegisterAccount: ({ email, name, password, username }) => {
-        return axios.post(`${URL}/register`, {
-            email,
-            name,
-            username,
-            password,
-        });
+    postRegisterAccount: data => {
+        return axios.post(`${URL}/register`, data);
     },
 
-    postLogin: ({ email, password, otpToken }) => {
-        return axios.post(`${URL}/login`, { email, password, otpToken });
+    postLogin: data => {
+        return axios.post(`${URL}/login`, data);
     },
 
     postLoginWithGoogle: access_token => {
@@ -24,20 +19,12 @@ export const accountApi = {
         return axios.post(`${URL}/login-fb`, { access_token });
     },
 
-    postResetPassword: ({ username, password, verifyCode }) => {
-        return axios.post(`${URL}/reset-password`, {
-            username,
-            password,
-            verifyCode,
-        });
+    postResetPassword: data => {
+        return axios.post(`${URL}/reset-password`, data);
     },
 
-    putToggleWordFavorite: ({ username, word, isAdd }) => {
-        return axios.put(`${URL}/toggle-favorite`, {
-            username,
-            word,
-            isAdd,
-        });
+    putToggleWordFavorite: data => {
+        return axios.put(`${URL}/toggle-favorite`, data);
     },
 
     putUpdateUserCoin: newCoin => {
