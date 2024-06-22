@@ -4,7 +4,8 @@
   "main": "gateway.js",
   "scripts": {
     "setup": "npm install && cd ./services/account && npm install && cd ../highscore && npm install && cd ../study && npm install",
-    "dev": "pm2 start ecosystem.config.js && npm run log",
+    "dev": "nodemon gateway.js --inspect",
+    "dev:all": "pm2 start ecosystem.config.js && npm run log",
     "stop": "pm2 stop all",
     "log": "pm2 logs",
     "list": "pm2 list",

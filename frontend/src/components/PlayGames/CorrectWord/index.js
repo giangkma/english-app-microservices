@@ -72,9 +72,11 @@ function CorrectWord({ list }) {
         status: 2,
         answerIndex,
       });
-      const { top, n } = nRightConsecutive.current;
-      if (top < n) nRightConsecutive.current.top = n;
+      nRightConsecutive.current.n = 0;
     }
+
+    const { top, n } = nRightConsecutive.current;
+    if (top < n) nRightConsecutive.current.top = n;
 
     // wait to speak the word if not last question
     if (current !== list.length - 1) {

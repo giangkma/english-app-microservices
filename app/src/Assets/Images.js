@@ -5,7 +5,10 @@ const images = {
     mockImg2: require('./images/mock-img.png'),
     mockImg: require('./images/mockimg.png'),
     banner: require('./images/app-banner.png'),
-    flashcard: require('./images/flashcard.png'),
+    manageWords: require('./images/manage-words.png'),
+    feedbacks: require('./images/feedbacks.png'),
+    accounts: require('./images/accounts.png'),
+
     game: require('./images/game-mock-img.png'),
     soccer: require('./images/soccer.png'),
     gamePractice: require('./images/game-practice.png'),
@@ -14,10 +17,15 @@ const images = {
     speakingMan: require('./images/speaking-man.png'),
     gameHint: require('./images/game-hint.png'),
     stadium: require('./images/stadium.jpg'),
+
+    defaultAvatar: require('./images/default-avatar.png'),
 };
 
 const icons = {
-    flashcardIcon: require('./images/flashcard-icon.png'),
+    manageWordsIcon: require('./images/manage-words-icon.png'),
+    feedbacksIcon: require('./images/feedbacks-icon.png'),
+    accountsIcon: require('./images/accounts-icon.png'),
+
     sentenceIcon: require('./images/sentence-icon.png'),
     vocabularyIcon: require('./images/vocabulary-icon.png'),
     playGameIcon: require('./images/playgame-icon.png'),

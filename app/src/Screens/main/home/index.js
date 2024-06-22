@@ -72,15 +72,23 @@ export const HomeScreen = ({ navigation }) => {
                         <View row spread marginB-20>
                             <HomeCard
                                 title={'Quản lý từ vựng'}
-                                imgSrc={Images.flashcard}
-                                iconSrc={Icons.flashcardIcon}
+                                imgSrc={Images.manageWords}
+                                iconSrc={Icons.manageWordsIcon}
                                 navigateTo={'Works'}
                             />
                             <HomeCard
                                 title={'Ý kiến người dùng'}
-                                imgSrc={Images.flashcard}
-                                iconSrc={Icons.flashcardIcon}
+                                imgSrc={Images.feedbacks}
+                                iconSrc={Icons.feedbacksIcon}
                                 navigateTo={'Feedbacks'}
+                            />
+                        </View>
+                        <View row spread marginB-20>
+                            <HomeCard
+                                title={'Quản lý người dùng'}
+                                imgSrc={Images.accounts}
+                                iconSrc={Icons.accountsIcon}
+                                navigateTo={'Accounts'}
                             />
                         </View>
                     </View>

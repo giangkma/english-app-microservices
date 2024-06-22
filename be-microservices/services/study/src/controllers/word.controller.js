@@ -181,6 +181,7 @@ exports.getWordPack = async (req, res) => {
       sortType,
       sortBy,
       status = CONTRIBUTED_STATUS.ACCEPTED,
+      search,
     } = req.query;
 
     const pageInt = parseInt(page),
@@ -195,6 +196,20 @@ exports.getWordPack = async (req, res) => {
       sortBy,
       {
         status,
+        ...(search && {
+          $or: [
+            { word: { $regex: search, $options: "i" } },
+            { type: { $regex: search, $options: "i" } },
+            { mean: { $regex: search, $options: "i" } },
+            { phonetic: { $regex: search, $options: "i" } },
+            {
+              contributedBy: { $regex: search, $options: "i" },
+            },
+            {
+              level: { $regex: search, $options: "i" },
+            },
+          ],
+        }),
       }
     );
 

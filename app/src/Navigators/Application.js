@@ -12,10 +12,11 @@ import {
     HomeScreen,
     WordsScreen,
     UserInfoScreen,
+    AccountsScreen,
+    FeedbackScreen,
 } from 'screens/main';
 import { DrawerContent } from './DrawerContent';
 import { navigationRef } from './utils';
-import { FeedbackScreen } from 'screens/main/feebacks';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -49,6 +50,7 @@ export const ApplicationNavigator = () => {
                         component={FlashCardsScreen}
                     />
                     <Drawer.Screen name="Works" component={WordsScreen} />
+                    <Drawer.Screen name="Accounts" component={AccountsScreen} />
                     <Drawer.Screen name="UserInfo" component={UserInfoScreen} />
                     <Drawer.Screen
                         name="Feedbacks"

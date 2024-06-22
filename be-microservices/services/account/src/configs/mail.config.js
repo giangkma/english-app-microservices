@@ -3,12 +3,12 @@ const nodemailer = require('nodemailer');
 
 // configure option
 const option = {
-  host: 'smtp.gmail.com',
+  host: "smtp.gmail.com",
   port: 587,
   secure: false,
   auth: {
-    user: process.env.NODE_MAILER_USER,
-    pass: process.env.NODE_MAILER_PASSWORD,
+    user: "amonino.app@gmail.com",
+    pass: "itksmmafkbrldnih",
   },
 };
 
@@ -22,7 +22,7 @@ const sendEmail = async ({ to, subject, text, html, ...rest }) => {
       //config mail
       const mail = {
         //sender access
-        from: '<no-reply@accounts.english247.herokuapp.com>',
+        from: "<no-reply@accounts.english247.herokuapp.com>",
         //receiver access
         to,
         //subject
@@ -41,7 +41,7 @@ const sendEmail = async ({ to, subject, text, html, ...rest }) => {
       }
     }
   } catch (err) {
-    console.error('ERROR MAILER: ', err);
+    console.error("ERROR MAILER: ", err);
     return false;
   }
 };
@@ -69,6 +69,32 @@ const htmlSignupAccount = (token) => {
       <i><b>${token}</b></i>
     </h3>
   ${footerHtmlVerifyMail}
+  </div>`;
+};
+
+// thông báo trở thành đóng góp viên cho amonino
+const htmlContributor = () => {
+  return `<div>
+    ${headerHtmlMail}
+    <h2 style="padding: 10px 0; margin-bottom: 10px;">
+        Xin chào anh (chị), 😍<br />
+        Chúc mừng bạn đã trở thành đóng góp viên cho Amonino.<br />
+        Cảm ơn bạn đã đóng góp cho cộng đồng học tiếng Anh của chúng tôi ♥️.
+    </h2>
+    <h1>Cảm ơn.</h1>
+  </div>`;
+};
+
+// thông báo bị thu hồi quyền đóng góp viên, cảm ơn
+const htmlContributorRevoke = () => {
+  return `<div>
+    ${headerHtmlMail}
+    <h2 style="padding: 10px 0; margin-bottom: 10px;">
+        Xin chào anh (chị),<br />
+        Quyền đóng góp viên của bạn đã bị thu hồi.<br />
+        Cảm ơn bạn đã đóng góp cho cộng đồng học tiếng Anh của chúng tôi ♥️.
+    </h2>
+    <h1>Cảm ơn.</h1>
   </div>`;
 };
 
@@ -106,4 +132,6 @@ module.exports = {
   htmlSignupAccount,
   htmlResetPassword,
   htmlWarningLogin,
+  htmlContributor,
+  htmlContributorRevoke,
 };

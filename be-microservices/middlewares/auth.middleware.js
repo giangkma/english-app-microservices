@@ -47,6 +47,11 @@ exports.jwtAuthentication = async (req, res, next) => {
         },
       });
 
+      if (!data.active) {
+        throw new Error(
+          "Tài khoản của bạn đã bị khoá, vui lòng liên hệ với quản trị viên để biết thêm thông tin"
+        );
+      }
       if (data) {
         data.accountId = accountId;
         res.locals.isAuth = true;
@@ -57,8 +62,9 @@ exports.jwtAuthentication = async (req, res, next) => {
   } catch (error) {
     console.error("Authentication with JWT ERROR: ", error);
     return res.status(401).json({
-      message: "Unauthorized.",
+      message: error.message,
       error,
+      code: "UNAUTHORIZED",
     });
   }
 };

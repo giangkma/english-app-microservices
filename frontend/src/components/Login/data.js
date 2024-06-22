@@ -29,6 +29,7 @@ function LoginData() {
       }
     } catch (error) {
       const message = error.response?.data?.message || 'Thất bại, thử lại !';
+      console.log(error);
       dispatch(setMessage({ message, type: 'error' }));
       setLoading(false);
     }

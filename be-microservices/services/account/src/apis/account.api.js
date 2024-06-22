@@ -39,4 +39,18 @@ accountApi.get(
   accountController.getUserProfile
 );
 
+accountApi.get("/users", jwtAuthentication, accountController.getAllUsers);
+
+accountApi.put(
+  "/set-contributor",
+  jwtAuthentication,
+  accountController.setContributor
+);
+
+accountApi.put(
+  "/update-status",
+  jwtAuthentication,
+  accountController.putUpdateAccountStatus
+);
+
 module.exports = accountApi;

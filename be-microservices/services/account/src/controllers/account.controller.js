@@ -16,6 +16,10 @@ const {
   saveVerifyCode,
   checkVerifyCode,
   removeVerifyCode,
+  getAllUsers,
+  setContributor,
+  findAccountById,
+  updateAccountStatus,
 } = require("../services/account.service");
 const { ACCOUNT_TYPES, MAX, ACCOUNT_ROLES } = require("../../../../constant");
 const jwtConfig = require("../configs/jwt.config");
@@ -66,6 +70,12 @@ exports.postLogin = async (req, res) => {
     if (!account) {
       return res.status(406).json({ message: "Tài khoản không tồn tại" });
     }
+    if (!account.active) {
+      return res.status(401).json({
+        message:
+          "Tài khoản của bạn đã bị khoá, vui lòng liên hệ với quản trị viên để biết thêm thông tin",
+      });
+    }
 
     if (isAdmin && account.role !== ACCOUNT_ROLES.ADMIN) {
       return res.status(401).json({ message: "Không có quyền truy cập" });
@@ -88,6 +98,78 @@ exports.postLogin = async (req, res) => {
     });
   } catch (error) {
     console.error("POST REGISTER ACCOUNT ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const { isContributor, search = "" } = req.query;
+    const users = await getAllUsers(isContributor, search);
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error("GET ALL USERS ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
+
+exports.setContributor = async (req, res) => {
+  try {
+    const { accountId, isContributor } = req.body;
+
+    const account = await findAccountById(accountId);
+    if (!account) {
+      return res.status(406).json({ message: "Tài khoản không tồn tại" });
+    }
+    if (!account.active) {
+      return res.status(401).json({
+        message:
+          "Tài khoản này đã bị khoá, vui lòng mở khoá trước khi thay đổi",
+      });
+    }
+
+    const update = await setContributor(accountId, isContributor);
+    if (update) {
+      const mail = {
+        to: "giangdt.kma@gmail.com",
+      };
+      if (isContributor) {
+        mail.subject = "Trở thành đóng góp viên";
+        mail.html = mailConfig.htmlContributor();
+      } else {
+        mail.subject = "Hủy đóng góp viên";
+        mail.html = mailConfig.htmlContributorRevoke();
+      }
+
+      await mailConfig.sendEmail(mail);
+
+      return res.status(200).json({ message: "success" });
+    }
+
+    return res.status(409).json({ message: "failed" });
+  } catch (error) {
+    console.error("PUT SET CONTRIBUTOR ERROR: ", error);
+    return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
+  }
+};
+
+exports.putUpdateAccountStatus = async (req, res) => {
+  try {
+    const { accountId, active } = req.body;
+
+    const account = await findAccountById(accountId);
+    if (!account) {
+      return res.status(406).json({ message: "Tài khoản không tồn tại" });
+    }
+
+    const update = await updateAccountStatus(accountId, active);
+    if (update) {
+      return res.status(200).json({ message: "success" });
+    }
+
+    return res.status(409).json({ message: "failed" });
+  } catch (error) {
+    console.error("PUT UPDATE ACCOUNT STATUS ERROR: ", error);
     return res.status(503).json({ message: "Lỗi dịch vụ, thử lại sau" });
   }
 };

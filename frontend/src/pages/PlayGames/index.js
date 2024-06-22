@@ -28,13 +28,13 @@ const GAME_LIST = [
     imgUrl: wordMatchingIcon,
     to: GAMES.WORD_MATCHING,
   },
-  {
-    title: 'Tay nhanh hơn não',
-    subTitle:
-      'Chọn một hình ảnh đúng với từ đã cho trong thời gian nhanh nhất nhé.',
-    imgUrl: brainIcon,
-    to: GAMES.FAST_GAME,
-  },
+  // {
+  //   title: 'Tay nhanh hơn não',
+  //   subTitle:
+  //     'Chọn một hình ảnh đúng với từ đã cho trong thời gian nhanh nhất nhé.',
+  //   imgUrl: brainIcon,
+  //   to: GAMES.FAST_GAME,
+  // },
 
   /* {
     title: 'Hãy chọn từ đúng (nâng cao)',

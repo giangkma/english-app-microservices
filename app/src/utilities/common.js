@@ -35,3 +35,9 @@ export const randomPersonIcon = () => {
     const randomIndex = Math.floor(Math.random() * personIcons.length);
     return personIcons[randomIndex];
 };
+
+export const formatDateToDisplay = date => {
+    const d = new Date(date);
+    // format: 01/01/2021
+    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+};

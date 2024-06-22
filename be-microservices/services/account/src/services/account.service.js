@@ -1,4 +1,4 @@
-const { ACCOUNT_TYPES, MAX } = require("../../../../constant");
+const { ACCOUNT_TYPES, MAX, ACCOUNT_ROLES } = require("../../../../constant");
 const { hashPassword } = require("../helper");
 const AccountModel = require("../models/account.model");
 const VerifyCodeModel = require("../models/verify-code.model");
@@ -16,6 +16,78 @@ exports.isExistAccount = async (email) => {
 exports.findAccount = async (email) => {
   try {
     return await AccountModel.findOne({ email });
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.findAccountById = async (id) => {
+  try {
+    return await AccountModel.findOne({ _id: id });
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.getAllUsers = async (isContributor, search) => {
+  try {
+    const accounts = await AccountModel.find({
+      role:
+        isContributor === "true"
+          ? ACCOUNT_ROLES.CONTRIBUTOR
+          : ACCOUNT_ROLES.USER,
+      $or: [
+        { email: { $regex: search, $options: "i" } },
+        { username: { $regex: search, $options: "i" } },
+      ],
+    })
+      .select("email role _id createdDate active")
+      .sort({ createdDate: -1 });
+
+    // map user info
+    const users = await Promise.all(
+      accounts.map(async (account) => {
+        const user = await UserModel.findOne({ accountId: account._id });
+        return {
+          ...account._doc,
+          ...user._doc,
+        };
+      })
+    );
+
+    return users;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.setContributor = async (accountId, isContributor) => {
+  try {
+    const isUpdated = await AccountModel.updateOne(
+      {
+        _id: accountId,
+      },
+      {
+        role: isContributor ? ACCOUNT_ROLES.CONTRIBUTOR : ACCOUNT_ROLES.USER,
+      }
+    );
+    return isUpdated;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.updateAccountStatus = async (accountId, active) => {
+  try {
+    const isUpdated = await AccountModel.updateOne(
+      {
+        _id: accountId,
+      },
+      {
+        active,
+      }
+    );
+    return isUpdated;
   } catch (error) {
     throw error;
   }
@@ -244,7 +316,9 @@ exports.removeVerifyCode = async (email = "") => {
 exports.getUserInfoByAccountId = async (accountId = "") => {
   try {
     const user = await UserModel.findOne({ accountId });
-    const account = await AccountModel.findById(accountId).select("role email");
+    const account = await AccountModel.findById(accountId).select(
+      "role email active"
+    );
     if (user && account)
       return {
         ...user._doc,

@@ -27,11 +27,19 @@ axiosClient.interceptors.request.use(
   },
 );
 
-axios.interceptors.response.use(
+axiosClient.interceptors.response.use(
   (res) => {
     return res;
   },
   (error) => {
+    if (
+      error.response?.status === 401 &&
+      error.response?.data?.code === 'UNAUTHORIZED'
+    ) {
+      tokenStorage.clear();
+      alert(error.response?.data?.message || '');
+      window.location.reload();
+    }
     throw error;
   },
 );

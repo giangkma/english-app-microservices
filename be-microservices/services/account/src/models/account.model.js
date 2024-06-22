@@ -43,6 +43,10 @@ const accountSchema = new Schema({
     enum: accountRoleEnum,
     default: ACCOUNT_ROLES.USER,
   },
+  active: {
+    type: Boolean,
+    default: true,
+  },
   createdDate: {
     type: Date,
     required: true,

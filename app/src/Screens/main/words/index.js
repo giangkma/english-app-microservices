@@ -1,4 +1,4 @@
-import { LoadingScreen, StackLayout } from 'components';
+import { LoadingScreen, StackLayout, StyledTextInput } from 'components';
 import React, { useState, useEffect } from 'react';
 import {
     View,
@@ -8,6 +8,7 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native-ui-lib';
+import { Controller, useForm } from 'react-hook-form';
 
 import { navigate } from 'navigators/utils';
 import { Colors } from 'assets/Colors';
@@ -17,6 +18,8 @@ import { showAlert } from 'utilities';
 import { FlatList, ActivityIndicator } from 'react-native';
 import { Config } from 'config';
 import { DeleteWordConfirm } from './DeleteWordConfirm';
+import { Search } from 'assets';
+import { useDebounce } from 'hooks';
 
 const WORD_STATUS = [
     {
@@ -44,6 +47,11 @@ export const useWords = () => {
     const [page, setPage] = useState(1);
     const [isHasMore, setIsHasMore] = useState(true);
     const [wordDelete, setWordDelete] = useState(undefined);
+
+    const { control, watch } = useForm();
+
+    const searchValue = watch('search');
+    const searchDebounce = useDebounce(searchValue, 500);
 
     const onAcceptWords = async ids => {
         try {
@@ -82,6 +90,7 @@ export const useWords = () => {
                     status: statusObj.status,
                     sortBy: 'updatedAt',
                     sortType: 'desc',
+                    search: searchDebounce,
                 },
             });
 
@@ -104,6 +113,10 @@ export const useWords = () => {
     }, [statusObj.status]);
 
     useEffect(() => {
+        getWords(true);
+    }, [searchDebounce]);
+
+    useEffect(() => {
         getWords(page === 1);
     }, [page]);
 
@@ -121,11 +134,13 @@ export const useWords = () => {
         onDeleteWords,
         wordDelete,
         setWordDelete,
+        control,
     };
 };
 
 export const WordsScreen = () => {
     const {
+        control,
         words,
         setWords,
         loading,
@@ -194,6 +209,21 @@ export const WordsScreen = () => {
                         );
                     })}
                 </View>
+            </View>
+            <View marginT-20>
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <StyledTextInput
+                            value={value}
+                            icon={<Search />}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            placeholder="Tìm kiếm từ vựng"
+                        />
+                    )}
+                    name="search"
+                />
             </View>
             {words.length === 0 && !loading && (
                 <View centerV centerH marginT-20>

@@ -52,4 +52,27 @@ export const accountApi = {
     getUserProfile: () => {
         return axios.get(`${URL}/user-profile`);
     },
+
+    getAllAccounts: (isContributor, search) => {
+        return axios.get(`${URL}/users`, {
+            params: {
+                isContributor,
+                search,
+            },
+        });
+    },
+
+    updateStatus: (accountId, active) => {
+        return axios.put(`${URL}/update-status`, {
+            accountId,
+            active,
+        });
+    },
+
+    updateContributorList: (accountId, isContributor) => {
+        return axios.put(`${URL}/set-contributor`, {
+            accountId,
+            isContributor,
+        });
+    },
 };
